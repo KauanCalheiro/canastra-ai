@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/wise-design-system-58fafb37-528b-45fc-b33b-e993b6574b87/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/wise-design-system-58fafb37-528b-45fc-b33b-e993b6574b87/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/wise-design-system-58fafb37-528b-45fc-b33b-e993b6574b87/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/wise-design-system-58fafb37-528b-45fc-b33b-e993b6574b87/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/wise-design-system-58fafb37-528b-45fc-b33b-e993b6574b87/tokens/shapes.css">
+  <link rel="stylesheet" href="_ds/wise-design-system-58fafb37-528b-45fc-b33b-e993b6574b87/tokens/base.css">
+  <style>
+    * { scrollbar-width: none; -ms-overflow-style: none; box-sizing: border-box; }
+    *::-webkit-scrollbar { display: none; }
+    input { font-family: var(--font-body); }
+  </style>
+</helmet>
+
+<div style="background: #c2c6bf; min-height: 100vh; padding: 40px 48px 64px; font-family: var(--font-body)">
+
+  <!-- Page header -->
+  <div style="margin-bottom: 28px; max-width: 900px">
+    <p style="font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #717570; margin: 0 0 8px">Canastra AI · Protótipo navegável (variante B)</p>
+    <h1 style="font-family: var(--font-display); font-size: 30px; font-weight: 900; color: var(--color-ink); margin: 0 0 8px; line-height: 1.05">Fluxo completo</h1>
+    <p style="font-size: 14px; color: #5a5e57; line-height: 1.5; margin: 0">Jogo contínuo: registre a jogada de qualquer jogador e acompanhe a partida rodando. Use a barra à direita para pular entre telas.</p>
+  </div>
+
+  <div style="display: flex; gap: 40px; align-items: flex-start">
+
+    <!-- ══════════════ PHONE ══════════════ -->
+    <div style="flex-shrink: 0; width: 390px; height: 844px; background-color: white; border-radius: 44px; overflow: hidden; border-width: 2px; border-style: solid; border-color: var(--color-ink); display: flex; flex-direction: column">
+
+      <!-- Status bar -->
+      <div style="height: 44px; background-color: {{ statusBarBg }}; display: flex; align-items: flex-end; justify-content: space-between; padding: 0 28px 8px; flex-shrink: 0">
+        <span style="font-size: 12px; color: {{ statusBarColor }}; font-weight: 500">9:41</span>
+        <span style="font-size: 11px; color: {{ statusBarMute }}">●●● ▲ ▐</span>
+      </div>
+
+      <!-- ───────── SCREEN: SETUP ───────── -->
+      <sc-if value="{{ isSetup }}" hint-placeholder-val="{{ true }}">
+        <div style="flex: 1; display: flex; flex-direction: column; background-color: var(--color-canvas-soft); overflow: hidden">
+          <div style="padding: 8px 24px 0">
+            <span style="font-family: var(--font-display); font-size: 22px; font-weight: 900; color: var(--color-ink)">canastra ai</span>
+          </div>
+          <div style="flex: 1; overflow-y: auto; padding: 18px 24px 16px">
+            <h2 style="font-family: var(--font-display); font-size: 28px; font-weight: 900; color: var(--color-ink); line-height: 1.05; margin: 0 0 6px">Nova partida</h2>
+            <p style="font-size: 14px; color: var(--color-body); line-height: 1.45; margin: 0 0 22px">Ajuste as regras e cadastre os jogadores na ordem da mesa.</p>
+
+            <!-- Decks -->
+            <div style="margin-bottom: 20px">
+              <label style="font-size: 13px; font-weight: 600; color: var(--color-ink); display: block; margin-bottom: 8px">Número de baralhos</label>
+              <div style="display: flex; gap: 8px">
+                <sc-for list="{{ deckOptions }}" as="opt" hint-placeholder-count="3">
+                  <div onClick="{{ opt.select }}" style="flex: 1; padding: 13px 0; background-color: {{ opt.bg }}; border-width: 1.5px; border-style: solid; border-color: {{ opt.border }}; border-radius: 12px; text-align: center; cursor: pointer">
+                    <span style="font-size: 16px; font-weight: 700; color: {{ opt.color }}">{{ opt.label }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+
+            <!-- Target score (numeric input) -->
+            <div style="margin-bottom: 20px">
+              <label style="font-size: 13px; font-weight: 600; color: var(--color-ink); display: block; margin-bottom: 8px">Pontuação para vencer</label>
+              <div style="display: flex; align-items: stretch; gap: 8px">
+                <div onClick="{{ targetMinus }}" style="width: 48px; flex-shrink: 0; background-color: white; border-width: 1px; border-style: solid; border-color: var(--color-ink); border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 22px; font-weight: 700; color: var(--color-ink)" style-hover="background-color: var(--color-canvas-soft)">−</div>
+                <input type="number" value="{{ target }}" onChange="{{ setTarget }}" style="flex: 1; min-width: 0; text-align: center; background-color: white; border-width: 1px; border-style: solid; border-color: var(--color-ink); border-radius: 12px; font-size: 22px; font-weight: 700; color: var(--color-ink); padding: 12px 8px; outline: none" />
+                <div onClick="{{ targetPlus }}" style="width: 48px; flex-shrink: 0; background-color: white; border-width: 1px; border-style: solid; border-color: var(--color-ink); border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 22px; font-weight: 700; color: var(--color-ink)" style-hover="background-color: var(--color-canvas-soft)">+</div>
+              </div>
+              <p style="font-size: 12px; color: var(--color-mute); margin: 8px 0 0">Obriga em <strong style="color: var(--color-body)">{{ obrigaPoints }}</strong> pontos (metade da meta).</p>
+            </div>
+
+            <!-- Players -->
+            <div style="margin-bottom: 8px">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px">
+                <label style="font-size: 13px; font-weight: 600; color: var(--color-ink)">Jogadores e ordem da mesa</label>
+                <div style="display: flex; gap: 6px">
+                  <sc-for list="{{ countOptions }}" as="opt" hint-placeholder-count="2">
+                    <div onClick="{{ opt.select }}" style="padding: 5px 12px; background-color: {{ opt.bg }}; border-width: 1.5px; border-style: solid; border-color: {{ opt.border }}; border-radius: 9999px; cursor: pointer">
+                      <span style="font-size: 12px; font-weight: 700; color: {{ opt.color }}">{{ opt.label }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+
+              <div style="display: flex; flex-direction: column; gap: 6px">
+                <sc-for list="{{ playerRows }}" as="p" hint-placeholder-count="4">
+                  <div style="display: flex; align-items: center; gap: 8px; background-color: white; border-width: 1px; border-style: solid; border-color: rgba(14,15,12,0.12); border-radius: 12px; padding: 6px 10px 6px 6px">
+                    <div style="width: 26px; height: 26px; border-radius: 50%; background-color: {{ p.dotBg }}; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+                      <span style="font-size: 11px; font-weight: 800; color: {{ p.dotColor }}">{{ p.order }}</span>
+                    </div>
+                    <input type="text" value="{{ p.name }}" onChange="{{ p.setName }}" placeholder="Nome" style="flex: 1; min-width: 0; border: none; outline: none; background: transparent; font-size: 14px; font-weight: 600; color: var(--color-ink); padding: 6px 0" />
+                    <div style="background-color: {{ p.teamBg }}; border-radius: 9999px; padding: 2px 8px; flex-shrink: 0">
+                      <span style="font-size: 9px; font-weight: 700; color: {{ p.teamColor }}">{{ p.teamLabel }}</span>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 1px; flex-shrink: 0">
+                      <div onClick="{{ p.moveUp }}" style="width: 22px; height: 14px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: {{ p.upColor }}; font-size: 9px">▲</div>
+                      <div onClick="{{ p.moveDown }}" style="width: 22px; height: 14px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: {{ p.downColor }}; font-size: 9px">▼</div>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+              <p style="font-size: 11px; color: var(--color-mute); line-height: 1.4; margin: 8px 0 0">A ordem define quem joga primeiro. Parceiros sentam alternados (dupla A e dupla B).</p>
+            </div>
+          </div>
+          <div style="padding: 12px 24px; background-color: var(--color-canvas-soft); border-top-width: 1px; border-top-style: solid; border-top-color: rgba(14,15,12,0.07); flex-shrink: 0">
+            <div onClick="{{ goEntry }}" style="background-color: var(--color-primary); border-radius: 24px; padding: 15px 0; text-align: center; cursor: pointer" style-hover="background-color: var(--color-primary-active)" style-active="background-color: var(--color-primary-neutral)">
+              <span style="font-size: 15px; font-weight: 700; color: var(--color-ink)">Registrar minha mão →</span>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ───────── SCREEN: HAND ENTRY ───────── -->
+      <sc-if value="{{ isEntry }}" hint-placeholder-val="{{ false }}">
+        <div style="flex: 1; display: flex; flex-direction: column; background-color: white; overflow: hidden">
+          <div style="padding: 6px 22px 12px; display: flex; align-items: center; gap: 12px; flex-shrink: 0; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgba(14,15,12,0.07)">
+            <div onClick="{{ goSetup }}" style="cursor: pointer; font-size: 20px; color: var(--color-ink); line-height: 1">←</div>
+            <div>
+              <p style="font-family: var(--font-display); font-size: 17px; font-weight: 900; color: var(--color-ink); margin: 0; line-height: 1.1">Registrar mão</p>
+              <p style="font-size: 11px; color: var(--color-mute); margin: 0">Toque para adicionar — toque de novo para repetir a carta</p>
+            </div>
+          </div>
+
+          <!-- Suit tabs -->
+          <div style="padding: 12px 22px 0; flex-shrink: 0">
+            <div style="display: flex; gap: 6px">
+              <sc-for list="{{ suitTabs }}" as="t" hint-placeholder-count="5">
+                <div onClick="{{ t.select }}" style="flex: 1; padding: 10px 0; background-color: {{ t.bg }}; border-radius: 10px; text-align: center; cursor: pointer; border-width: 1.5px; border-style: solid; border-color: {{ t.border }}">
+                  <span style="font-size: 16px; color: {{ t.color }}; font-weight: 700">{{ t.symbol }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <!-- Rank grid -->
+          <div style="flex: 1; overflow-y: auto; padding: 14px 22px">
+            <p style="font-size: 10px; color: var(--color-mute); text-align: right; margin: 0 0 10px">{{ deckLimitNote }}</p>
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px">
+              <sc-for list="{{ pickerCards }}" as="card" hint-placeholder-count="13">
+                <div onClick="{{ card.add }}" style="position: relative; height: 62px; background-color: {{ card.bg }}; border-radius: 10px; border-width: 1.5px; border-style: solid; border-color: {{ card.borderColor }}; cursor: {{ card.cursor }}; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; opacity: {{ card.opacity }}" style-active="transform: scale(0.94)">
+                  <span style="font-size: 15px; font-weight: 700; color: {{ card.color }}; line-height: 1">{{ card.val }}</span>
+                  <span style="font-size: 15px; color: {{ card.color }}; line-height: 1">{{ card.suitSymbol }}</span>
+                  <div style="position: absolute; top: 4px; right: 4px; min-width: 16px; height: 16px; padding: 0 4px; border-radius: 9999px; background-color: var(--color-ink); display: {{ card.countDisplay }}; align-items: center; justify-content: center">
+                    <span style="font-size: 9px; font-weight: 800; color: var(--color-primary)">{{ card.count }}</span>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+            <sc-if value="{{ isJokerTab }}" hint-placeholder-val="{{ false }}">
+              <p style="font-size: 12px; color: var(--color-mute); line-height: 1.45; margin: 14px 2px 0">O Coringão (W) vale 5 pontos e nunca suja a canastra. Com 2 baralhos há 4 coringões — toque várias vezes se tiver mais de um.</p>
+            </sc-if>
+          </div>
+
+          <!-- Selected tray -->
+          <div style="background-color: var(--color-canvas-soft); padding: 12px 22px; flex-shrink: 0; border-top-width: 1px; border-top-style: solid; border-top-color: rgba(14,15,12,0.07)">
+            <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px">
+              <span style="font-size: 12px; font-weight: 600; color: var(--color-ink)">Minha mão</span>
+              <span style="font-size: 12px; color: {{ handCountColor }}; font-weight: 600">{{ handCount }} / {{ expectedHand }} · toque p/ remover</span>
+            </div>
+            <div style="overflow-x: auto; display: flex; gap: 4px; min-height: 50px; align-items: center">
+              <sc-if value="{{ handEmpty }}" hint-placeholder-val="{{ false }}">
+                <span style="font-size: 12px; color: var(--color-mute)">Nenhuma carta ainda</span>
+              </sc-if>
+              <sc-for list="{{ trayCards }}" as="card" hint-placeholder-count="6">
+                <div onClick="{{ card.remove }}" style="width: 34px; height: 48px; background-color: {{ card.bg }}; border-radius: 6px; border-width: 1.5px; border-style: solid; border-color: {{ card.borderColor }}; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; flex-shrink: 0; cursor: pointer">
+                  <span style="font-size: 11px; font-weight: 700; color: {{ card.color }}; line-height: 1">{{ card.val }}</span>
+                  <span style="font-size: 12px; color: {{ card.color }}; line-height: 1">{{ card.suitSymbol }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="padding: 12px 22px; background-color: white; border-top-width: 1px; border-top-style: solid; border-top-color: rgba(14,15,12,0.07); flex-shrink: 0">
+            <div onClick="{{ goGame }}" style="background-color: var(--color-primary); border-radius: 24px; padding: 15px 0; text-align: center; cursor: pointer" style-hover="background-color: var(--color-primary-active)" style-active="background-color: var(--color-primary-neutral)">
+              <span style="font-size: 15px; font-weight: 700; color: var(--color-ink)">Confirmar e começar →</span>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ───────── SCREEN: GAME (continuous) ───────── -->
+      <sc-if value="{{ isGame }}" hint-placeholder-val="{{ false }}">
+        <div style="flex: 1; display: flex; flex-direction: column; background-color: white; overflow: hidden">
+          <!-- Header -->
+          <div style="background-color: var(--color-canvas-soft); padding: 2px 22px 10px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0">
+            <span style="font-family: var(--font-display); font-size: 16px; font-weight: 900; color: var(--color-ink)">canastra ai</span>
+            <div style="display: flex; align-items: center; gap: 10px">
+              <div style="display: flex; align-items: baseline; gap: 4px">
+                <span style="font-family: var(--font-display); font-size: 17px; font-weight: 900; color: var(--color-ink)">240</span>
+                <span style="font-size: 10px; color: var(--color-mute)">vs</span>
+                <span style="font-family: var(--font-display); font-size: 17px; font-weight: 900; color: var(--color-ink)">180</span>
+              </div>
+              <div style="background-color: var(--color-primary-pale); border-radius: 9999px; padding: 3px 9px">
+                <span style="font-size: 9px; font-weight: 700; color: var(--color-ink-deep)">LIVRE</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Turn strip -->
+          <div style="background-color: var(--color-ink); padding: 10px 22px; flex-shrink: 0">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px">
+              <div style="display: flex; align-items: baseline; gap: 6px">
+                <span style="font-size: 11px; color: rgba(255,255,255,0.5)">Vez de</span>
+                <span style="font-family: var(--font-display); font-size: 16px; font-weight: 900; color: {{ turnNameColor }}">{{ turnName }}</span>
+              </div>
+              <span style="font-size: 11px; color: rgba(255,255,255,0.4)">Rodada 3 · jogada {{ playNumber }}</span>
+            </div>
+            <div style="display: flex; gap: 6px">
+              <sc-for list="{{ playerChips }}" as="p" hint-placeholder-count="4">
+                <div style="flex: 1; display: flex; align-items: center; gap: 6px; padding: 6px 8px; border-radius: 9999px; background-color: {{ p.chipBg }}; opacity: {{ p.opacity }}">
+                  <div style="width: 18px; height: 18px; border-radius: 50%; background-color: {{ p.dotBg }}; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+                    <span style="font-size: 9px; font-weight: 800; color: {{ p.dotColor }}">{{ p.initial }}</span>
+                  </div>
+                  <span style="font-size: 10px; font-weight: 600; color: {{ p.nameColor }}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{ p.short }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <!-- Scroll area -->
+          <div style="flex: 1; overflow-y: auto; background-color: white; padding: 14px 22px">
+
+            <!-- Recorder card -->
+            <div style="background-color: var(--color-canvas-soft); border-radius: 16px; padding: 14px; margin-bottom: 14px">
+              <p style="font-size: 11px; font-weight: 700; color: var(--color-ink); margin: 0 0 10px">{{ recorderTitle }}</p>
+
+              <!-- Compra -->
+              <p style="font-size: 10px; color: var(--color-body); text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 6px">1 · De onde comprou</p>
+              <div style="display: flex; gap: 6px; margin-bottom: 12px">
+                <div onClick="{{ setCompraMonte }}" style="flex: 1; padding: 9px 0; text-align: center; border-radius: 10px; background-color: {{ compraMonteBg }}; border-width: 1.5px; border-style: solid; border-color: {{ compraMonteBorder }}; cursor: pointer">
+                  <span style="font-size: 12px; font-weight: 600; color: {{ compraMonteColor }}">Monte</span>
+                </div>
+                <div onClick="{{ setCompraLixo }}" style="flex: 1; padding: 9px 0; text-align: center; border-radius: 10px; background-color: {{ compraLixoBg }}; border-width: 1.5px; border-style: solid; border-color: {{ compraLixoBorder }}; cursor: pointer">
+                  <span style="font-size: 12px; font-weight: 600; color: {{ compraLixoColor }}">Pegou o lixo</span>
+                </div>
+              </div>
+
+              <!-- Descarte -->
+              <p style="font-size: 10px; color: var(--color-body); text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 6px">2 · Descartou</p>
+              <div onClick="{{ toggleDiscardPicker }}" style="display: flex; align-items: center; gap: 8px; padding: 8px 10px; background-color: white; border-width: 1.5px; border-style: solid; border-color: {{ discardBorder }}; border-radius: 10px; cursor: pointer; margin-bottom: 4px">
+                <sc-if value="{{ hasDiscard }}" hint-placeholder-val="{{ false }}">
+                  <div style="width: 26px; height: 36px; background-color: white; border-radius: 5px; border-width: 1px; border-style: solid; border-color: rgba(14,15,12,0.15); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; flex-shrink: 0">
+                    <span style="font-size: 10px; font-weight: 700; color: {{ discardColor }}; line-height: 1">{{ discardVal }}</span>
+                    <span style="font-size: 11px; color: {{ discardColor }}; line-height: 1">{{ discardSuit }}</span>
+                  </div>
+                </sc-if>
+                <span style="font-size: 13px; font-weight: 600; color: {{ discardTextColor }}">{{ discardText }}</span>
+                <span style="margin-left: auto; font-size: 12px; color: var(--color-mute)">{{ discardChevron }}</span>
+              </div>
+
+              <!-- Inline discard picker -->
+              <sc-if value="{{ pickerOpen }}" hint-placeholder-val="{{ false }}">
+                <div style="background-color: white; border-radius: 10px; padding: 10px; margin-bottom: 4px">
+                  <div style="display: flex; gap: 5px; margin-bottom: 8px">
+                    <sc-for list="{{ discardSuitTabs }}" as="t" hint-placeholder-count="4">
+                      <div onClick="{{ t.select }}" style="flex: 1; padding: 7px 0; text-align: center; border-radius: 8px; background-color: {{ t.bg }}; border-width: 1px; border-style: solid; border-color: {{ t.border }}; cursor: pointer">
+                        <span style="font-size: 14px; font-weight: 700; color: {{ t.color }}">{{ t.symbol }}</span>
+                      </div>
+                    </sc-for>
+                  </div>
+                  <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px">
+                    <sc-for list="{{ discardRanks }}" as="r" hint-placeholder-count="13">
+                      <div onClick="{{ r.pick }}" style="aspect-ratio: 3/4; background-color: {{ r.bg }}; border-radius: 5px; border-width: 1px; border-style: solid; border-color: rgba(14,15,12,0.12); display: flex; align-items: center; justify-content: center; cursor: pointer">
+                        <span style="font-size: 11px; font-weight: 700; color: {{ r.color }}">{{ r.label }}</span>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-if>
+
+              <!-- Step 3: Mesa -->
+              <p style="font-size: 10px; color: var(--color-body); text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 6px">3 · Baixou na mesa</p>
+              <div style="display: flex; gap: 6px; margin-bottom: 8px">
+                <div onClick="{{ setMesaNao }}" style="flex: 1; padding: 9px 0; text-align: center; border-radius: 10px; background-color: {{ mesaNaoBg }}; border-width: 1.5px; border-style: solid; border-color: {{ mesaNaoBorder }}; cursor: pointer">
+                  <span style="font-size: 12px; font-weight: 600; color: {{ mesaNaoColor }}">Não</span>
+                </div>
+                <div onClick="{{ setMesaSim }}" style="flex: 1; padding: 9px 0; text-align: center; border-radius: 10px; background-color: {{ mesaSimBg }}; border-width: 1.5px; border-style: solid; border-color: {{ mesaSimBorder }}; cursor: pointer">
+                  <span style="font-size: 12px; font-weight: 600; color: {{ mesaSimColor }}">Sim</span>
+                </div>
+              </div>
+              <sc-if value="{{ mesaSim }}" hint-placeholder-val="{{ false }}">
+                <div style="display: flex; align-items: stretch; background-color: white; border-radius: 10px; border-width: 1.5px; border-style: solid; border-color: var(--color-ink); overflow: hidden; margin-bottom: 8px">
+                  <div onClick="{{ mesaMinus }}" style="width: 44px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 22px; font-weight: 700; color: var(--color-ink)" style-hover="background-color: var(--color-canvas-soft)">−</div>
+                  <div style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 4px; border-left-width: 1px; border-left-style: solid; border-left-color: rgba(14,15,12,0.1); border-right-width: 1px; border-right-style: solid; border-right-color: rgba(14,15,12,0.1)">
+                    <span style="font-size: 18px; font-weight: 700; color: var(--color-ink)">{{ mesaCountStr }}</span>
+                    <span style="font-size: 11px; color: var(--color-mute)">carta(s) na mesa</span>
+                  </div>
+                  <div onClick="{{ mesaPlus }}" style="width: 44px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 22px; font-weight: 700; color: var(--color-ink)" style-hover="background-color: var(--color-canvas-soft)">+</div>
+                </div>
+              </sc-if>
+
+              <!-- Register & advance -->
+              <div onClick="{{ registerPlay }}" style="background-color: var(--color-primary); border-radius: 24px; padding: 13px 0; text-align: center; cursor: pointer" style-hover="background-color: var(--color-primary-active)" style-active="background-color: var(--color-primary-neutral)">
+                <span style="font-size: 14px; font-weight: 700; color: var(--color-ink)">Registrar e passar a vez →</span>
+              </div>
+            </div>
+
+            <!-- Game log -->
+            <p style="font-size: 10px; font-weight: 600; color: var(--color-body); text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 8px">Jogadas da rodada</p>
+            <div style="margin-bottom: 16px">
+              <sc-for list="{{ gameLog }}" as="ev" hint-placeholder-count="4">
+                <div style="display: flex; gap: 10px; align-items: flex-start; padding: 7px 0; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgba(14,15,12,0.06)">
+                  <div style="width: 20px; height: 20px; border-radius: 50%; background-color: {{ ev.dotBg }}; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px">
+                    <span style="font-size: 9px; font-weight: 800; color: {{ ev.dotColor }}">{{ ev.initial }}</span>
+                  </div>
+                  <div style="flex: 1">
+                    <p style="font-size: 12px; color: var(--color-ink); line-height: 1.35; margin: 0"><strong style="font-weight: 700">{{ ev.who }}</strong> {{ ev.text }}</p>
+                  </div>
+                  <sc-if value="{{ ev.hasCard }}" hint-placeholder-val="{{ false }}">
+                    <div style="width: 22px; height: 30px; background-color: white; border-radius: 4px; border-width: 1px; border-style: solid; border-color: rgba(14,15,12,0.15); display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0">
+                      <span style="font-size: 8px; font-weight: 700; color: {{ ev.cardColor }}; line-height: 1">{{ ev.cardVal }}</span>
+                      <span style="font-size: 9px; color: {{ ev.cardColor }}; line-height: 1">{{ ev.cardSuit }}</span>
+                    </div>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </div>
+
+            <!-- Mesa: my seqs -->
+            <p style="font-size: 10px; font-weight: 600; color: var(--color-body); text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 8px">Minhas sequências</p>
+            <sc-for list="{{ mySeqGroups }}" as="seq" hint-placeholder-count="2">
+              <div style="margin-bottom: 8px; padding: 8px 10px; background-color: var(--color-canvas-soft); border-radius: 10px">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px">
+                  <span style="font-size: 10px; font-weight: 600; color: var(--color-body)">{{ seq.label }}</span>
+                  <div style="background-color: {{ seq.badgeBg }}; border-radius: 9999px; padding: 2px 8px"><span style="font-size: 9px; font-weight: 700; color: {{ seq.badgeColor }}">{{ seq.badge }}</span></div>
+                </div>
+                <div style="display: flex; gap: 4px; align-items: center">
+                  <sc-for list="{{ seq.cards }}" as="sc" hint-placeholder-count="4">
+                    <div style="width: 30px; height: 42px; background-color: {{ sc.bg }}; border-radius: 6px; border-width: 1px; border-style: solid; border-color: {{ sc.borderColor }}; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; flex-shrink: 0">
+                      <span style="font-size: 10px; font-weight: 700; color: {{ sc.color }}; line-height: 1">{{ sc.val }}</span>
+                      <span style="font-size: 11px; color: {{ sc.color }}; line-height: 1">{{ sc.suitSymbol }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-for>
+
+            <div style="height: 1px; background-color: rgba(14,15,12,0.07); margin: 10px 0 14px"></div>
+
+            <p style="font-size: 10px; font-weight: 600; color: var(--color-body); text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 8px">Sequências dos adversários</p>
+            <sc-for list="{{ oppSeqGroups }}" as="seq" hint-placeholder-count="1">
+              <div style="margin-bottom: 8px; padding: 8px 10px; background-color: var(--color-canvas-soft); border-radius: 10px">
+                <span style="font-size: 10px; font-weight: 600; color: var(--color-body); display: block; margin-bottom: 6px">{{ seq.label }}</span>
+                <div style="display: flex; gap: 4px; align-items: center">
+                  <sc-for list="{{ seq.cards }}" as="sc" hint-placeholder-count="5">
+                    <div style="width: 30px; height: 42px; background-color: {{ sc.bg }}; border-radius: 6px; border-width: 1px; border-style: solid; border-color: {{ sc.borderColor }}; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; flex-shrink: 0">
+                      <span style="font-size: 10px; font-weight: 700; color: {{ sc.color }}; line-height: 1">{{ sc.val }}</span>
+                      <span style="font-size: 11px; color: {{ sc.color }}; line-height: 1">{{ sc.suitSymbol }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-for>
+
+            <div onClick="{{ goRoundEnd }}" style="margin-top: 12px; border-width: 1.5px; border-style: solid; border-color: var(--color-ink); border-radius: 24px; padding: 12px 0; text-align: center; cursor: pointer" style-hover="background-color: var(--color-canvas-soft)">
+              <span style="font-size: 14px; font-weight: 600; color: var(--color-ink)">Encerrar rodada</span>
+            </div>
+          </div>
+
+          <!-- AI strip (contextual) -->
+          <div onClick="{{ goAnalysis }}" style="background-color: {{ aiStripBg }}; padding: 11px 22px; flex-shrink: 0; cursor: pointer">
+            <div style="display: flex; align-items: flex-start; gap: 10px">
+              <div style="width: 18px; height: 18px; background-color: {{ aiDotBg }}; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px">
+                <span style="font-size: 7px; color: {{ aiDotColor }}; font-weight: 900">IA</span>
+              </div>
+              <div style="flex: 1">
+                <p style="font-family: var(--font-display); font-size: 14px; font-weight: 900; color: {{ aiTitleColor }}; line-height: 1.2; margin: 0 0 2px">{{ aiTitle }}</p>
+                <p style="font-size: 11px; color: {{ aiBodyColor }}; line-height: 1.3; margin: 0">{{ aiBody }}</p>
+              </div>
+              <span style="font-size: 16px; color: {{ aiTitleColor }}; align-self: center">→</span>
+            </div>
+          </div>
+
+          <!-- Hand grid (only my turn) -->
+          <sc-if value="{{ isMyTurn }}" hint-placeholder-val="{{ true }}">
+            <div style="background-color: white; padding: 10px 22px 8px; flex-shrink: 0">
+              <div style="display: flex; align-items: baseline; gap: 6px; margin-bottom: 8px">
+                <span style="font-size: 12px; font-weight: 600; color: var(--color-ink)">Minha mão</span>
+                <span style="font-size: 11px; color: var(--color-mute)">{{ gameHandCount }} cartas</span>
+              </div>
+              <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px">
+                <sc-for list="{{ gameHandCards }}" as="card" hint-placeholder-count="12">
+                  <div onClick="{{ card.toggle }}" style="aspect-ratio: 5/7; background-color: {{ card.bg }}; border-radius: 7px; border-width: 1.5px; border-style: solid; border-color: {{ card.borderColor }}; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px" style-active="transform: scale(0.9)">
+                    <span style="font-size: 11px; font-weight: 700; color: {{ card.color }}; line-height: 1">{{ card.val }}</span>
+                    <span style="font-size: 13px; color: {{ card.color }}; line-height: 1">{{ card.suitSymbol }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+
+          <!-- Bottom nav -->
+          <div style="display: flex; background-color: white; border-top-width: 1px; border-top-style: solid; border-top-color: rgba(14,15,12,0.08); flex-shrink: 0">
+            <div onClick="{{ goGame }}" style="flex: 1; padding: 8px 0 6px; text-align: center; cursor: pointer">
+              <p style="font-size: 16px; margin: 0; line-height: 1; color: var(--color-ink)">▦</p>
+              <p style="font-size: 10px; font-weight: 700; color: var(--color-ink); margin: 2px 0 0">Jogo</p>
+            </div>
+            <div onClick="{{ goHistory }}" style="flex: 1; padding: 8px 0 6px; text-align: center; cursor: pointer">
+              <p style="font-size: 16px; margin: 0; line-height: 1; color: var(--color-mute)">≣</p>
+              <p style="font-size: 10px; font-weight: 600; color: var(--color-mute); margin: 2px 0 0">Histórico</p>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ───────── SCREEN: ANALYSIS ───────── -->
+      <sc-if value="{{ isAnalysis }}" hint-placeholder-val="{{ false }}">
+        <div style="flex: 1; display: flex; flex-direction: column; background-color: var(--color-ink); overflow: hidden">
+          <div style="padding: 6px 22px 14px; display: flex; align-items: center; gap: 12px; flex-shrink: 0">
+            <div onClick="{{ goGame }}" style="cursor: pointer; font-size: 20px; color: var(--color-primary); line-height: 1">←</div>
+            <div style="display: flex; align-items: center; gap: 8px">
+              <div style="width: 20px; height: 20px; background-color: var(--color-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center"><span style="font-size: 8px; color: var(--color-ink-deep); font-weight: 900">IA</span></div>
+              <span style="font-size: 11px; color: var(--color-primary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em">Análise completa</span>
+            </div>
+          </div>
+
+          <div style="flex: 1; overflow-y: auto; padding: 0 22px 20px">
+            <p style="font-family: var(--font-display); font-size: 23px; font-weight: 900; color: white; line-height: 1.12; margin: 0 0 10px">Jogue J♥ na sequência de copas</p>
+            <p style="font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.5; margin: 0 0 20px">Estende copas (7-8-9-10) para 5 cartas. Faltam 2 para a canastra limpa de 20 pontos. Guarde o Coringão para fechar uma segunda sequência.</p>
+
+            <p style="font-size: 10px; font-weight: 700; color: var(--color-primary); text-transform: uppercase; letter-spacing: 0.1em; margin: 0 0 10px">Leitura dos adversários</p>
+            <sc-for list="{{ reads }}" as="r" hint-placeholder-count="3">
+              <div style="background-color: rgba(255,255,255,0.06); border-radius: 14px; padding: 14px; margin-bottom: 10px">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px">
+                  <span style="font-size: 13px; font-weight: 700; color: white">{{ r.who }}</span>
+                  <span style="font-size: 11px; color: rgba(255,255,255,0.45)">{{ r.cards }} cartas na mão</span>
+                </div>
+                <p style="font-size: 12px; color: rgba(255,255,255,0.6); line-height: 1.45; margin: 0 0 8px">{{ r.note }}</p>
+                <div style="display: flex; gap: 6px; flex-wrap: wrap">
+                  <sc-for list="{{ r.chips }}" as="chip" hint-placeholder-count="2">
+                    <div style="background-color: {{ chip.bg }}; border-radius: 9999px; padding: 3px 10px"><span style="font-size: 10px; font-weight: 600; color: {{ chip.color }}">{{ chip.text }}</span></div>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-for>
+
+            <div style="background-color: rgba(255,184,0,0.12); border-radius: 14px; padding: 14px; margin-bottom: 18px; border-width: 1px; border-style: solid; border-color: rgba(255,184,0,0.3)">
+              <p style="font-size: 12px; font-weight: 700; color: #ffd34d; margin: 0 0 4px">Cuidado ao descartar</p>
+              <p style="font-size: 12px; color: rgba(255,255,255,0.6); line-height: 1.45; margin: 0">Evite 5♦ e 6♦ — encaixam direto na sequência de ouros dos adversários (3-4-5-6-7). Com 3 cartas no lixo eles ganhariam pouco, mas o monte cresce rápido.</p>
+            </div>
+
+            <p style="font-size: 10px; font-weight: 700; color: var(--color-primary); text-transform: uppercase; letter-spacing: 0.1em; margin: 0 0 10px">Alternativas</p>
+            <sc-for list="{{ alternatives }}" as="alt" hint-placeholder-count="2">
+              <div style="display: flex; gap: 10px; align-items: flex-start; padding: 10px 0; border-top-width: 1px; border-top-style: solid; border-top-color: rgba(255,255,255,0.08)">
+                <span style="font-size: 13px; font-weight: 700; color: var(--color-primary); flex-shrink: 0">{{ alt.rank }}</span>
+                <div>
+                  <p style="font-size: 13px; font-weight: 600; color: white; margin: 0 0 2px">{{ alt.move }}</p>
+                  <p style="font-size: 11px; color: rgba(255,255,255,0.5); line-height: 1.4; margin: 0">{{ alt.why }}</p>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="padding: 12px 22px; flex-shrink: 0; border-top-width: 1px; border-top-style: solid; border-top-color: rgba(255,255,255,0.1)">
+            <div onClick="{{ goGame }}" style="background-color: var(--color-primary); border-radius: 24px; padding: 15px 0; text-align: center; cursor: pointer" style-hover="background-color: var(--color-primary-active)">
+              <span style="font-size: 15px; font-weight: 700; color: var(--color-ink)">Voltar ao jogo</span>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ───────── SCREEN: HISTORY (two levels) ───────── -->
+      <sc-if value="{{ isHistory }}" hint-placeholder-val="{{ false }}">
+        <div style="flex: 1; display: flex; flex-direction: column; background-color: white; overflow: hidden">
+          <div style="background-color: var(--color-canvas-soft); padding: 2px 22px 12px; flex-shrink: 0; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgba(14,15,12,0.07)">
+            <h2 style="font-family: var(--font-display); font-size: 24px; font-weight: 900; color: var(--color-ink); margin: 0 0 10px; line-height: 1.05">Histórico</h2>
+            <div style="display: flex; background-color: white; border-radius: 9999px; padding: 3px; gap: 3px; border-width: 1px; border-style: solid; border-color: rgba(14,15,12,0.1)">
+              <div onClick="{{ setHistPartidas }}" style="flex: 1; padding: 7px 0; border-radius: 9999px; background-color: {{ histPartidasBg }}; text-align: center; cursor: pointer">
+                <span style="font-size: 12px; font-weight: 600; color: {{ histPartidasColor }}">Partidas</span>
+              </div>
+              <div onClick="{{ setHistRodadas }}" style="flex: 1; padding: 7px 0; border-radius: 9999px; background-color: {{ histRodadasBg }}; text-align: center; cursor: pointer">
+                <span style="font-size: 12px; font-weight: 600; color: {{ histRodadasColor }}">Rodadas</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="flex: 1; overflow-y: auto; padding: 14px 22px 16px">
+
+            <!-- PARTIDAS -->
+            <sc-if value="{{ showPartidas }}" hint-placeholder-val="{{ false }}">
+              <sc-for list="{{ matches }}" as="m" hint-placeholder-count="3">
+                <div style="border-width: 1px; border-style: solid; border-color: rgba(14,15,12,0.1); border-radius: 14px; padding: 14px; margin-bottom: 10px">
+                  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px">
+                    <div>
+                      <p style="font-size: 13px; font-weight: 700; color: var(--color-ink); margin: 0">{{ m.title }}</p>
+                      <p style="font-size: 11px; color: var(--color-mute); margin: 2px 0 0">{{ m.meta }}</p>
+                    </div>
+                    <div style="background-color: {{ m.resultBg }}; border-radius: 9999px; padding: 3px 10px"><span style="font-size: 10px; font-weight: 700; color: {{ m.resultColor }}">{{ m.result }}</span></div>
+                  </div>
+                  <div style="display: flex; align-items: baseline; gap: 8px">
+                    <span style="font-family: var(--font-display); font-size: 26px; font-weight: 900; color: var(--color-ink)">{{ m.us }}</span>
+                    <span style="font-size: 13px; color: var(--color-mute)">×</span>
+                    <span style="font-family: var(--font-display); font-size: 26px; font-weight: 900; color: var(--color-mute)">{{ m.them }}</span>
+                  </div>
+                </div>
+              </sc-for>
+            </sc-if>
+
+            <!-- RODADAS -->
+            <sc-if value="{{ showRodadas }}" hint-placeholder-val="{{ true }}">
+              <sc-for list="{{ rounds }}" as="rd" hint-placeholder-count="3">
+                <div style="border-width: 1px; border-style: solid; border-color: rgba(14,15,12,0.1); border-radius: 14px; padding: 14px; margin-bottom: 10px">
+                  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px">
+                    <span style="font-size: 13px; font-weight: 700; color: var(--color-ink)">{{ rd.title }}</span>
+                    <div style="background-color: {{ rd.resultBg }}; border-radius: 9999px; padding: 3px 10px"><span style="font-size: 10px; font-weight: 700; color: {{ rd.resultColor }}">{{ rd.result }}</span></div>
+                  </div>
+                  <div style="display: flex; gap: 16px; margin-bottom: 10px">
+                    <div><p style="font-size: 10px; color: var(--color-mute); margin: 0">Nós</p><p style="font-size: 16px; font-weight: 700; color: var(--color-ink); margin: 0">+{{ rd.us }}</p></div>
+                    <div><p style="font-size: 10px; color: var(--color-mute); margin: 0">Eles</p><p style="font-size: 16px; font-weight: 700; color: var(--color-ink); margin: 0">+{{ rd.them }}</p></div>
+                    <div><p style="font-size: 10px; color: var(--color-mute); margin: 0">Canastras</p><p style="font-size: 16px; font-weight: 700; color: var(--color-ink); margin: 0">{{ rd.canastras }}</p></div>
+                  </div>
+                  <div style="background-color: var(--color-canvas-soft); border-radius: 10px; padding: 9px 11px; display: flex; gap: 8px; align-items: flex-start">
+                    <div style="width: 16px; height: 16px; background-color: var(--color-ink); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px"><span style="font-size: 6px; color: var(--color-primary); font-weight: 900">IA</span></div>
+                    <p style="font-size: 11px; color: var(--color-body); line-height: 1.4; margin: 0">{{ rd.tip }}</p>
+                  </div>
+                </div>
+              </sc-for>
+            </sc-if>
+          </div>
+
+          <div style="display: flex; background-color: white; border-top-width: 1px; border-top-style: solid; border-top-color: rgba(14,15,12,0.08); flex-shrink: 0">
+            <div onClick="{{ goGame }}" style="flex: 1; padding: 8px 0 6px; text-align: center; cursor: pointer">
+              <p style="font-size: 16px; margin: 0; line-height: 1; color: var(--color-mute)">▦</p>
+              <p style="font-size: 10px; font-weight: 600; color: var(--color-mute); margin: 2px 0 0">Jogo</p>
+            </div>
+            <div onClick="{{ goHistory }}" style="flex: 1; padding: 8px 0 6px; text-align: center; cursor: pointer">
+              <p style="font-size: 16px; margin: 0; line-height: 1; color: var(--color-ink)">≣</p>
+              <p style="font-size: 10px; font-weight: 700; color: var(--color-ink); margin: 2px 0 0">Histórico</p>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ───────── SCREEN: ROUND END ───────── -->
+      <sc-if value="{{ isRoundEnd }}" hint-placeholder-val="{{ false }}">
+        <div style="flex: 1; display: flex; flex-direction: column; background-color: var(--color-canvas-soft); overflow: hidden">
+          <div style="padding: 6px 22px 12px; display: flex; align-items: center; gap: 12px; flex-shrink: 0">
+            <div onClick="{{ goGame }}" style="cursor: pointer; font-size: 20px; color: var(--color-ink); line-height: 1">←</div>
+            <p style="font-family: var(--font-display); font-size: 17px; font-weight: 900; color: var(--color-ink); margin: 0">Fim da rodada</p>
+          </div>
+
+          <div style="flex: 1; overflow-y: auto; padding: 8px 22px 16px">
+            <div style="background-color: var(--color-ink); border-radius: 16px; padding: 18px; margin-bottom: 14px">
+              <p style="font-size: 10px; color: var(--color-primary); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; margin: 0 0 6px">Bateu</p>
+              <p style="font-family: var(--font-display); font-size: 22px; font-weight: 900; color: white; line-height: 1.1; margin: 0 0 4px">Sua dupla bateu!</p>
+              <p style="font-size: 12px; color: rgba(255,255,255,0.55); line-height: 1.4; margin: 0">+10 pontos pelo bate, mais as canastras e as cartas na mão dos adversários.</p>
+            </div>
+
+            <!-- Breakdown -->
+            <div style="background-color: white; border-radius: 16px; padding: 16px; margin-bottom: 14px">
+              <p style="font-size: 11px; font-weight: 700; color: var(--color-ink); text-transform: uppercase; letter-spacing: 0.06em; margin: 0 0 12px">Contagem da dupla</p>
+              <sc-for list="{{ scoreLines }}" as="line" hint-placeholder-count="4">
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 7px 0; border-top-width: {{ line.border }}; border-top-style: solid; border-top-color: rgba(14,15,12,0.07)">
+                  <span style="font-size: 13px; color: var(--color-ink)">{{ line.label }}</span>
+                  <span style="font-size: 14px; font-weight: 700; color: var(--color-ink)">{{ line.value }}</span>
+                </div>
+              </sc-for>
+
+              <!-- Subtotal -->
+              <div style="display: flex; align-items: center; justify-content: space-between; padding: 9px 0; margin-top: 4px; border-top-width: 1.5px; border-top-style: solid; border-top-color: rgba(14,15,12,0.15)">
+                <span style="font-size: 13px; font-weight: 600; color: var(--color-body)">Subtotal em pontos</span>
+                <span style="font-size: 15px; font-weight: 700; color: var(--color-ink)">{{ subtotalPts }}</span>
+              </div>
+              <!-- x10 -->
+              <div style="display: flex; align-items: center; justify-content: space-between; padding: 7px 0">
+                <span style="font-size: 13px; color: var(--color-body)">× 10</span>
+                <span style="font-size: 14px; font-weight: 700; color: var(--color-ink)">{{ timesTen }}</span>
+              </div>
+              <!-- rounding -->
+              <div style="display: flex; align-items: center; justify-content: space-between; padding: 7px 0">
+                <span style="font-size: 13px; color: var(--color-body)">Final 5 arredonda p/ cima</span>
+                <span style="font-size: 14px; font-weight: 700; color: {{ roundColor }}">{{ roundAdj }}</span>
+              </div>
+
+              <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 0 0; margin-top: 6px; border-top-width: 2px; border-top-style: solid; border-top-color: var(--color-ink)">
+                <span style="font-size: 15px; font-weight: 700; color: var(--color-ink)">Total da rodada</span>
+                <span style="font-family: var(--font-display); font-size: 24px; font-weight: 900; color: var(--color-ink)">+{{ roundTotal }}</span>
+              </div>
+            </div>
+
+            <!-- New totals -->
+            <div style="display: flex; gap: 8px; margin-bottom: 14px">
+              <div style="flex: 1; background-color: var(--color-primary); border-radius: 14px; padding: 14px">
+                <p style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-ink-deep); font-weight: 600; margin: 0 0 4px">Minha dupla</p>
+                <p style="font-family: var(--font-display); font-size: 28px; font-weight: 900; color: var(--color-ink); line-height: 1; margin: 0">{{ newMine }}</p>
+              </div>
+              <div style="flex: 1; background-color: white; border-radius: 14px; padding: 14px">
+                <p style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-body); font-weight: 600; margin: 0 0 4px">Adversários</p>
+                <p style="font-family: var(--font-display); font-size: 28px; font-weight: 900; color: var(--color-ink); line-height: 1; margin: 0">{{ newThem }}</p>
+              </div>
+            </div>
+
+            <!-- Match-won banner -->
+            <sc-if value="{{ matchWon }}" hint-placeholder-val="{{ false }}">
+              <div style="background-color: var(--color-primary); border-radius: 16px; padding: 16px; text-align: center">
+                <p style="font-family: var(--font-display); font-size: 18px; font-weight: 900; color: var(--color-ink); margin: 0 0 2px">Partida vencida!</p>
+                <p style="font-size: 12px; color: var(--color-ink-deep); margin: 0">Sua dupla passou da meta de {{ target }} pontos.</p>
+              </div>
+            </sc-if>
+          </div>
+
+          <div style="padding: 12px 22px; flex-shrink: 0; display: flex; gap: 8px">
+            <div onClick="{{ goHistory }}" style="flex: 1; border-width: 1.5px; border-style: solid; border-color: var(--color-ink); border-radius: 24px; padding: 14px 0; text-align: center; cursor: pointer" style-hover="background-color: rgba(14,15,12,0.04)">
+              <span style="font-size: 14px; font-weight: 600; color: var(--color-ink)">Ver histórico</span>
+            </div>
+            <div onClick="{{ goEntry }}" style="flex: 1; background-color: var(--color-primary); border-radius: 24px; padding: 14px 0; text-align: center; cursor: pointer" style-hover="background-color: var(--color-primary-active)">
+              <span style="font-size: 14px; font-weight: 700; color: var(--color-ink)">Nova rodada →</span>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- Home indicator -->
+      <div style="height: 34px; background-color: {{ homeBg }}; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+        <div style="width: 120px; height: 4px; background-color: {{ homeColor }}; border-radius: 2px; opacity: 0.15"></div>
+      </div>
+    </div>
+
+    <!-- ══════════════ REVIEWER RAIL ══════════════ -->
+    <div style="flex-shrink: 0; width: 220px; position: sticky; top: 40px">
+      <p style="font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #5a5e57; margin: 0 0 12px">Telas do fluxo</p>
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <sc-for list="{{ navItems }}" as="nav" hint-placeholder-count="6">
+          <div onClick="{{ nav.go }}" style="display: flex; align-items: center; gap: 10px; padding: 11px 14px; background-color: {{ nav.bg }}; border-radius: 12px; cursor: pointer; border-width: 1.5px; border-style: solid; border-color: {{ nav.border }}">
+            <span style="font-family: var(--font-display); font-size: 13px; font-weight: 900; color: {{ nav.numColor }}; width: 16px; flex-shrink: 0">{{ nav.num }}</span>
+            <div>
+              <p style="font-size: 13px; font-weight: 700; color: {{ nav.titleColor }}; margin: 0; line-height: 1.2">{{ nav.title }}</p>
+              <p style="font-size: 11px; color: {{ nav.subColor }}; margin: 1px 0 0; line-height: 1.2">{{ nav.sub }}</p>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <p style="font-size: 11px; color: #6b6f68; line-height: 1.5; margin: 16px 2px 0">No jogo: escolha de onde cada um comprou, qual carta descartou, e toque em "passar a vez" — a partida roda e o log cresce.</p>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 760, &quot;height&quot;: 980}}">
+class Component extends DCLogic {
+  state = {
+    screen: 'setup',
+    decks: 2,
+    target: 500,
+    playerNames: ['Você', 'Rui', 'Ana', 'Léo'],
+    pickerSuit: 'H',
+    // multiset of hand cards (array allows duplicates)
+    handCards: ['JH', '6C', '7C', '8C', '3S', '4S', 'W', 'QH', 'KH', '2D', '9C', 'QS'],
+    gameSelected: [],
+    histTab: 'rodadas',
+    // continuous game
+    turnIndex: 0,
+    playNumber: 7,
+    compra: null,
+    pendingDiscard: null,
+    discardSuit: 'S',
+    pickerOpen: false,
+    mesaLowered: null,
+    mesaCount: 0,
+    gameLog: [
+      { code: 'AS', who: 'Ana', text: 'abriu a trinca de ases.', hasCard: false },
+      { code: '5C', who: 'Léo', text: 'comprou do monte e descartou.', hasCard: true },
+      { code: 'KD', who: 'Você', text: 'pegou o lixo e baixou copas.', hasCard: true },
+      { code: 'QS', who: 'Rui', text: 'comprou do monte e descartou.', hasCard: true },
+    ],
+  };
+
+  // ── card helper ──
+  cardInfo(code, selected) {
+    if (code === 'W') {
+      return { code, val: 'W', suitSymbol: '★', bg: selected ? '#cdffad' : '#9fe870', color: '#163300', borderColor: '#0e0f0c' };
+    }
+    const suit = code[code.length - 1];
+    const rawVal = code.slice(0, code.length - 1);
+    const val = rawVal === 'T' ? '10' : rawVal;
+    const suitMap = { S: '♠', H: '♥', C: '♣', D: '♦' };
+    const isRed = suit === 'H' || suit === 'D';
+    return {
+      code, val, suitSymbol: suitMap[suit] || '',
+      bg: selected ? '#9fe870' : '#ffffff',
+      color: isRed ? '#d03238' : '#0e0f0c',
+      borderColor: selected ? '#0e0f0c' : 'rgba(14,15,12,0.12)',
+    };
+  }
+
+  teamOf(i) { return i % 2 === 0 ? 'A' : 'B'; }
+
+  go(screen) { return () => this.setState({ screen }); }
+
+  renderVals() {
+    const s = this.state;
+    const screen = s.screen;
+    const names = s.playerNames;
+
+    // ── pill option helper ──
+    const mkOpts = (list, current, setKey) => list.map((o) => {
+      const active = o.value === current;
+      return {
+        label: o.label, value: o.value,
+        bg: active ? '#9fe870' : '#ffffff',
+        border: active ? '#0e0f0c' : 'rgba(14,15,12,0.15)',
+        color: '#0e0f0c',
+        select: () => this.setState({ [setKey]: o.value }),
+      };
+    });
+
+    // ═══ SETUP ═══
+    const teamColors = {
+      A: { bg: '#9fe870', color: '#163300', dot: '#0e0f0c', dotText: '#9fe870', label: 'Dupla A' },
+      B: { bg: '#0e0f0c', color: '#ffffff', dot: '#e8ebe6', dotText: '#0e0f0c', label: 'Dupla B' },
+    };
+    const setName = (i, v) => this.setState((st) => {
+      const arr = st.playerNames.slice(); arr[i] = v; return { playerNames: arr };
+    });
+    const movePlayer = (i, dir) => this.setState((st) => {
+      const arr = st.playerNames.slice();
+      const j = i + dir;
+      if (j < 0 || j >= arr.length) return {};
+      const tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+      // keep turnIndex sane
+      return { playerNames: arr };
+    });
+    const playerRows = names.map((name, i) => {
+      const t = this.teamOf(i);
+      const tc = teamColors[t];
+      return {
+        name, order: i + 1,
+        dotBg: t === 'A' ? '#9fe870' : '#0e0f0c',
+        dotColor: t === 'A' ? '#163300' : '#ffffff',
+        teamBg: t === 'A' ? '#e9f9dd' : '#e8ebe6',
+        teamColor: t === 'A' ? '#163300' : '#454745',
+        teamLabel: tc.label,
+        upColor: i === 0 ? 'rgba(14,15,12,0.2)' : '#717570',
+        downColor: i === names.length - 1 ? 'rgba(14,15,12,0.2)' : '#717570',
+        setName: (e) => setName(i, e.target.value),
+        moveUp: () => movePlayer(i, -1),
+        moveDown: () => movePlayer(i, 1),
+      };
+    });
+    const setCount = (n) => this.setState((st) => {
+      const base = ['Você', 'Rui', 'Ana', 'Léo'];
+      const arr = [];
+      for (let i = 0; i < n; i++) arr.push(st.playerNames[i] || base[i] || ('Jogador ' + (i + 1)));
+      return { playerNames: arr, turnIndex: 0 };
+    });
+    const countOptions = [
+      { label: '2', value: 2 }, { label: '4', value: 4 },
+    ].map((o) => {
+      const active = names.length === o.value;
+      return {
+        label: o.label,
+        bg: active ? '#0e0f0c' : '#ffffff',
+        border: active ? '#0e0f0c' : 'rgba(14,15,12,0.15)',
+        color: active ? '#ffffff' : '#0e0f0c',
+        select: () => setCount(o.value),
+      };
+    });
+
+    const setTarget = (e) => {
+      const v = parseInt(e.target.value, 10);
+      this.setState({ target: isNaN(v) ? 0 : v });
+    };
+    const targetPlus = () => this.setState((st) => ({ target: st.target + 100 }));
+    const targetMinus = () => this.setState((st) => ({ target: Math.max(100, st.target - 100) }));
+
+    // ═══ HAND ENTRY (multiset) ═══
+    const suits = [
+      { key: 'H', symbol: '♥', red: true }, { key: 'D', symbol: '♦', red: true },
+      { key: 'C', symbol: '♣', red: false }, { key: 'S', symbol: '♠', red: false },
+      { key: 'W', symbol: '★', red: false },
+    ];
+    const suitTabs = suits.map((su) => {
+      const active = s.pickerSuit === su.key;
+      return {
+        symbol: su.symbol,
+        bg: active ? '#0e0f0c' : '#ffffff',
+        border: active ? '#0e0f0c' : 'rgba(14,15,12,0.15)',
+        color: active ? (su.key === 'W' ? '#9fe870' : (su.red ? '#ff8a8e' : '#ffffff')) : (su.red ? '#d03238' : '#0e0f0c'),
+        select: () => this.setState({ pickerSuit: su.key }),
+      };
+    });
+    const ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K'];
+    const maxCopies = (code) => code === 'W' ? s.decks * 2 : s.decks;
+    const addCard = (code) => {
+      if (countOf(code) >= maxCopies(code)) return;
+      this.setState((st) => ({ handCards: [...st.handCards, code] }));
+    };
+    const removeOne = (code) => this.setState((st) => {
+      const idx = st.handCards.indexOf(code);
+      if (idx === -1) return {};
+      const arr = st.handCards.slice(); arr.splice(idx, 1); return { handCards: arr };
+    });
+    const countOf = (code) => s.handCards.filter((c) => c === code).length;
+
+    const pickerCodes = s.pickerSuit === 'W' ? ['W'] : ranks.map((r) => r + s.pickerSuit);
+    const pickerCards = pickerCodes.map((code) => {
+      const n = countOf(code);
+      const atLimit = n >= maxCopies(code);
+      const info = this.cardInfo(code, n > 0 && !atLimit);
+      return { ...info, count: String(n), countDisplay: n > 0 ? 'flex' : 'none', opacity: atLimit ? '0.28' : '1', cursor: atLimit ? 'default' : 'pointer', add: () => addCard(code) };
+    });
+    const trayCards = s.handCards.map((code, i) => ({ ...this.cardInfo(code, false), remove: () => removeOne(code) }));
+    const expectedHand = 13;
+    const deckLimitNote = 'Máx. ' + s.decks + ' cóp./carta · ' + (s.decks * 2) + ' coringões (' + s.decks + ' baralho' + (s.decks > 1 ? 's' : '') + ')';
+    const handCount = s.handCards.length;
+
+    // ═══ GAME — players & turns ═══
+    const initials = names.map((n) => (n.trim()[0] || '?').toUpperCase());
+    const shortName = (n) => n.length > 7 ? n.slice(0, 6) + '…' : n;
+    const cur = s.turnIndex % names.length;
+    const isMyTurn = cur === 0; // seat 0 = "Você"
+    const turnName = names[cur];
+    const turnTeam = this.teamOf(cur);
+    const turnNameColor = turnTeam === 'A' ? '#9fe870' : '#ffffff';
+
+    const playerChips = names.map((n, i) => {
+      const t = this.teamOf(i);
+      const isCur = i === cur;
+      return {
+        initial: initials[i], short: shortName(n),
+        chipBg: isCur ? 'rgba(159,232,112,0.16)' : 'transparent',
+        opacity: isCur ? '1' : '0.5',
+        dotBg: t === 'A' ? '#9fe870' : '#e8ebe6',
+        dotColor: '#0e0f0c',
+        nameColor: '#ffffff',
+      };
+    });
+
+    // discard picker
+    const discardSuits = [
+      { key: 'S', symbol: '♠', red: false }, { key: 'H', symbol: '♥', red: true },
+      { key: 'C', symbol: '♣', red: false }, { key: 'D', symbol: '♦', red: true },
+    ];
+    const discardSuitTabs = discardSuits.map((su) => {
+      const active = s.discardSuit === su.key;
+      return {
+        symbol: su.symbol,
+        bg: active ? '#0e0f0c' : '#ffffff',
+        border: active ? '#0e0f0c' : 'rgba(14,15,12,0.12)',
+        color: active ? (su.red ? '#ff8a8e' : '#ffffff') : (su.red ? '#d03238' : '#0e0f0c'),
+        select: () => this.setState({ discardSuit: su.key }),
+      };
+    });
+    const setDiscard = (code) => this.setState({ pendingDiscard: code, pickerOpen: false });
+    const discardRanks = ranks.map((r) => {
+      const code = r + s.discardSuit;
+      const isRed = s.discardSuit === 'H' || s.discardSuit === 'D';
+      return {
+        label: r === 'T' ? '10' : r,
+        bg: s.pendingDiscard === code ? '#9fe870' : '#ffffff',
+        color: isRed ? '#d03238' : '#0e0f0c',
+        pick: () => setDiscard(code),
+      };
+    });
+
+    const hasDiscard = !!s.pendingDiscard;
+    let discardVal = '', discardSuitSym = '', discardColor = '#0e0f0c';
+    if (hasDiscard) {
+      const di = this.cardInfo(s.pendingDiscard, false);
+      discardVal = di.val; discardSuitSym = di.suitSymbol; discardColor = di.color;
+    }
+
+    const advanceTurn = () => this.setState((st) => {
+      // build log entry for current player
+      const c = st.turnIndex % st.playerNames.length;
+      const who = st.playerNames[c];
+      let text;
+      if (st.compra === 'lixo') text = 'pegou o lixo';
+      else text = 'comprou do monte';
+      if (st.mesaLowered && st.mesaCount > 0) {
+        text += ', baixou ' + st.mesaCount + ' carta' + (st.mesaCount !== 1 ? 's' : '') + ' na mesa';
+      }
+      let hasCard = false, code = '';
+      if (st.pendingDiscard) { text += ' e descartou.'; hasCard = true; code = st.pendingDiscard; }
+      else { text += '.'; }
+      const entry = { code, who, text, hasCard };
+      return {
+        gameLog: [...st.gameLog, entry],
+        turnIndex: st.turnIndex + 1,
+        playNumber: st.playNumber + 1,
+        compra: null,
+        pendingDiscard: null,
+        pickerOpen: false,
+        mesaLowered: null,
+        mesaCount: 0,
+      };
+    });
+
+    // game log render
+    const teamDot = (who) => {
+      const i = names.indexOf(who);
+      const t = i >= 0 ? this.teamOf(i) : 'B';
+      return { dotBg: t === 'A' ? '#9fe870' : '#0e0f0c', dotColor: t === 'A' ? '#163300' : '#ffffff', initial: (who.trim()[0] || '?').toUpperCase() };
+    };
+    const gameLog = s.gameLog.slice(-6).map((ev) => {
+      const td = teamDot(ev.who);
+      const ci = ev.code ? this.cardInfo(ev.code, false) : null;
+      return {
+        who: ev.who, text: ev.text,
+        dotBg: td.dotBg, dotColor: td.dotColor, initial: td.initial,
+        hasCard: ev.hasCard && !!ci,
+        cardVal: ci ? ci.val : '', cardSuit: ci ? ci.suitSymbol : '', cardColor: ci ? ci.color : '#0e0f0c',
+      };
+    });
+
+    // mesa
+    const grp = (label, codes, badge, badgeBg, badgeColor) => ({
+      label, badge, badgeBg, badgeColor,
+      cards: codes.map((c) => this.cardInfo(c, false)),
+    });
+    const mySeqGroups = [
+      grp('Copas', ['7H', '8H', '9H', 'TH'], 'em formação', 'rgba(14,15,12,0.08)', '#454745'),
+      grp('Trinca de ases', ['AS', 'AD', 'AH'], 'limpa', '#9fe870', '#163300'),
+    ];
+    const oppSeqGroups = [
+      { label: 'Ouros · 5 cartas', cards: ['3D', '4D', '5D', '6D', '7D'].map((c) => this.cardInfo(c, false)) },
+    ];
+
+    // game hand
+    const toggleGame = (code) => this.setState((st) => ({
+      gameSelected: st.gameSelected.includes(code)
+        ? st.gameSelected.filter((c) => c !== code)
+        : [...st.gameSelected, code],
+    }));
+    const gameHandCards = s.handCards.map((code, i) => ({
+      ...this.cardInfo(code, s.gameSelected.includes(code)),
+      toggle: () => toggleGame(code),
+    }));
+
+    // AI strip contextual
+    let aiTitle, aiBody, aiStripBg, aiDotBg, aiDotColor, aiTitleColor, aiBodyColor;
+    if (isMyTurn) {
+      aiStripBg = '#9fe870'; aiDotBg = '#0e0f0c'; aiDotColor = '#9fe870';
+      aiTitleColor = '#0e0f0c'; aiBodyColor = '#163300';
+      aiTitle = 'Jogue J♥ na sequência de copas';
+      aiBody = 'Estende para 5 — a 2 da canastra limpa.';
+    } else {
+      aiStripBg = '#0e0f0c'; aiDotBg = '#9fe870'; aiDotColor = '#0e0f0c';
+      aiTitleColor = '#ffffff'; aiBodyColor = 'rgba(255,255,255,0.5)';
+      aiTitle = 'IA observando ' + turnName;
+      aiBody = 'Registre a jogada para receber a próxima sugestão.';
+    }
+
+    // ═══ ANALYSIS ═══
+    const reads = [
+      { who: 'Adversário 1', cards: 8, note: 'Pegou 2 cartas do lixo na última rodada. Provável sequência de espadas em andamento.', chips: [
+        { text: 'Junta espadas', bg: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.8)' },
+        { text: 'Sem canastra', bg: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.8)' } ] },
+      { who: 'Adversário 2', cards: 6, note: 'Mão curta — pode estar perto de bater. Descartou cartas altas, sinal de jogo limpo.', chips: [
+        { text: 'Risco de bate', bg: 'rgba(255,184,0,0.18)', color: '#ffd34d' } ] },
+      { who: 'Parceiro', cards: 10, note: 'Abriu a trinca de ases. Pode receber 4♥ e 5♥ — segure-os para alimentar a canastra dele.', chips: [
+        { text: 'Alimente os ases', bg: 'rgba(159,232,112,0.2)', color: '#9fe870' } ] },
+    ];
+    const alternatives = [
+      { rank: '2º', move: 'Descarte K♥', why: 'Não serve a nenhuma sequência aberta dos adversários. Seguro.' },
+      { rank: '3º', move: 'Abrir nova sequência de paus', why: 'Você tem 6-7-8-9♣ — abre cedo e libera o parceiro, mas expõe suas cartas.' },
+    ];
+
+    // ═══ HISTORY ═══
+    const rounds = [
+      { title: 'Rodada 3 · em andamento', result: 'Atual', resultBg: '#9fe870', resultColor: '#163300', us: 0, them: 0, canastras: 1, tip: 'Foco em fechar a canastra de copas antes do Adv 2 bater.' },
+      { title: 'Rodada 2', result: 'Vitória', resultBg: 'rgba(46,173,75,0.15)', resultColor: '#2ead4b', us: 150, them: 30, canastras: 2, tip: 'Segurar o Coringão garantiu a segunda canastra limpa no fim.' },
+      { title: 'Rodada 1', result: 'Derrota', resultBg: 'rgba(208,50,56,0.12)', resultColor: '#d03238', us: 60, them: 120, canastras: 1, tip: 'Descarte do 6♦ deu o lixo ao adversário — evitar cartas colocadas.' },
+    ];
+    const matches = [
+      { title: 'Partida 4 · hoje', meta: '3 rodadas · 42 min', result: 'Em jogo', resultBg: '#9fe870', resultColor: '#163300', us: 240, them: 180 },
+      { title: 'Partida 3 · ontem', meta: '5 rodadas · 1h08', result: 'Vitória', resultBg: 'rgba(46,173,75,0.15)', resultColor: '#2ead4b', us: 510, them: 360 },
+      { title: 'Partida 2 · 14 jun', meta: '4 rodadas · 51 min', result: 'Derrota', resultBg: 'rgba(208,50,56,0.12)', resultColor: '#d03238', us: 420, them: 500 },
+    ];
+
+    // ═══ MESA (baixar na mesa) ═══
+    const setMesaNao = () => this.setState({ mesaLowered: false, mesaCount: 0 });
+    const setMesaSim = () => this.setState((st) => ({ mesaLowered: true, mesaCount: st.mesaCount || 1 }));
+    const mesaPlus  = () => this.setState((st) => ({ mesaCount: Math.min(13, st.mesaCount + 1) }));
+    const mesaMinus = () => this.setState((st) => ({ mesaCount: Math.max(1,  st.mesaCount - 1) }));
+    const mesaSim = s.mesaLowered === true;
+    const mesaSimBg     = mesaSim             ? '#9fe870'              : '#ffffff';
+    const mesaSimBorder = mesaSim             ? '#0e0f0c'              : 'rgba(14,15,12,0.15)';
+    const mesaSimColor  = '#0e0f0c';
+    const mesaNaoBg     = s.mesaLowered === false ? '#0e0f0c'          : '#ffffff';
+    const mesaNaoBorder = s.mesaLowered === false ? '#0e0f0c'          : 'rgba(14,15,12,0.15)';
+    const mesaNaoColor  = s.mesaLowered === false ? '#ffffff'          : '#0e0f0c';
+    const mesaCountStr  = String(s.mesaCount || 1);
+
+    // ═══ ROUND END — scoring (multiply by 10, round trailing-5 up) ═══
+    const advHandPts = 1.5 * 3 + 2 + 1;        // 3 ases + um 2 + um rei na mão dos adversários = 7.5
+    const canastraLimpa = 20, canastraSuja = 10, bate = 10;
+    const subtotal = advHandPts + canastraLimpa + canastraSuja + bate; // 47.5
+    const timesTenVal = Math.round(subtotal * 10);                      // 475
+    const roundTotalVal = (timesTenVal % 10 === 5) ? timesTenVal + 5 : timesTenVal; // 480
+    const roundAdjVal = roundTotalVal - timesTenVal;
+    const fmt = (n) => Number.isInteger(n) ? String(n) : n.toFixed(1).replace('.', ',');
+
+    const scoreLines = [
+      { label: 'Cartas na mão dos adversários', value: '+' + fmt(advHandPts), border: '0' },
+      { label: 'Canastra limpa (ases)', value: '+' + canastraLimpa, border: '1px' },
+      { label: 'Canastra suja (copas)', value: '+' + canastraSuja, border: '1px' },
+      { label: 'Bate', value: '+' + bate, border: '1px' },
+    ];
+    const mineBefore = 240, themBefore = 180;
+    const newMine = mineBefore + roundTotalVal;
+    const matchWon = newMine >= s.target;
+
+    // ═══ nav rail ═══
+    const screensList = [
+      { key: 'setup', title: 'Setup', sub: 'Nova partida' },
+      { key: 'entry', title: 'Registrar mão', sub: 'Selecionar cartas' },
+      { key: 'game', title: 'Jogo contínuo', sub: 'Registrar jogadas' },
+      { key: 'analysis', title: 'Análise da IA', sub: 'Leitura completa' },
+      { key: 'history', title: 'Histórico', sub: 'Partidas e rodadas' },
+      { key: 'roundend', title: 'Fim de rodada', sub: 'Contagem de pontos' },
+    ];
+    const navItems = screensList.map((sc, i) => {
+      const active = sc.key === screen;
+      return {
+        num: String(i + 1), title: sc.title, sub: sc.sub,
+        bg: active ? '#0e0f0c' : '#ffffff',
+        border: active ? '#0e0f0c' : 'rgba(14,15,12,0.12)',
+        numColor: active ? '#9fe870' : 'rgba(14,15,12,0.3)',
+        titleColor: active ? '#ffffff' : '#0e0f0c',
+        subColor: active ? 'rgba(255,255,255,0.5)' : '#717570',
+        go: this.go(sc.key),
+      };
+    });
+
+    // chrome colors
+    let statusBarBg = '#ffffff', statusBarColor = '#0e0f0c', statusBarMute = '#717570', homeBg = '#ffffff', homeColor = '#0e0f0c';
+    if (screen === 'setup' || screen === 'roundend' || screen === 'game') { statusBarBg = '#e8ebe6'; statusBarColor = '#454745'; }
+    if (screen === 'history') { statusBarBg = '#e8ebe6'; statusBarColor = '#454745'; }
+    if (screen === 'analysis') { statusBarBg = '#0e0f0c'; statusBarColor = 'rgba(255,255,255,0.45)'; statusBarMute = 'rgba(255,255,255,0.3)'; homeBg = '#0e0f0c'; homeColor = '#ffffff'; }
+    if (screen === 'roundend') { homeBg = '#e8ebe6'; }
+
+    return {
+      // flags
+      isSetup: screen === 'setup', isEntry: screen === 'entry', isGame: screen === 'game',
+      isAnalysis: screen === 'analysis', isHistory: screen === 'history', isRoundEnd: screen === 'roundend',
+      // nav
+      goSetup: this.go('setup'), goEntry: this.go('entry'), goGame: this.go('game'),
+      goAnalysis: this.go('analysis'), goHistory: this.go('history'), goRoundEnd: this.go('roundend'),
+
+      // setup
+      deckOptions: mkOpts([{ label: '1', value: 1 }, { label: '2', value: 2 }, { label: '3', value: 3 }], s.decks, 'decks'),
+      target: s.target, setTarget, targetPlus, targetMinus,
+      obrigaPoints: Math.round(s.target / 2),
+      countOptions, playerRows,
+
+      // entry
+      suitTabs, pickerCards, trayCards,
+      isJokerTab: s.pickerSuit === 'W',
+      handCount, expectedHand, deckLimitNote,
+      handCountColor: handCount === expectedHand ? '#2ead4b' : '#717570',
+      handEmpty: handCount === 0,
+
+      // game turn
+      turnName, turnNameColor, playNumber: String(s.playNumber),
+      playerChips, isMyTurn,
+      recorderTitle: isMyTurn ? 'Registrar sua jogada' : ('O que ' + turnName + ' fez?'),
+      // compra
+      setCompraMonte: () => this.setState({ compra: 'monte' }),
+      setCompraLixo: () => this.setState({ compra: 'lixo' }),
+      compraMonteBg: s.compra === 'monte' ? '#9fe870' : '#ffffff',
+      compraLixoBg: s.compra === 'lixo' ? '#9fe870' : '#ffffff',
+      compraMonteBorder: s.compra === 'monte' ? '#0e0f0c' : 'rgba(14,15,12,0.15)',
+      compraLixoBorder: s.compra === 'lixo' ? '#0e0f0c' : 'rgba(14,15,12,0.15)',
+      compraMonteColor: '#0e0f0c', compraLixoColor: '#0e0f0c',
+      // discard
+      toggleDiscardPicker: () => this.setState((st) => ({ pickerOpen: !st.pickerOpen })),
+      pickerOpen: s.pickerOpen,
+      hasDiscard, discardVal, discardSuit: discardSuitSym, discardColor,
+      discardText: hasDiscard ? 'Carta descartada' : 'Escolher carta',
+      discardTextColor: hasDiscard ? '#0e0f0c' : '#717570',
+      discardBorder: hasDiscard ? '#0e0f0c' : 'rgba(14,15,12,0.15)',
+      discardChevron: s.pickerOpen ? '▲' : '▼',
+      discardSuitTabs, discardRanks,
+      registerPlay: advanceTurn,
+      gameLog,
+      mySeqGroups, oppSeqGroups,
+      gameHandCards, gameHandCount: s.handCards.length,
+      aiTitle, aiBody, aiStripBg, aiDotBg, aiDotColor, aiTitleColor, aiBodyColor,
+      setMesaNao, setMesaSim, mesaPlus, mesaMinus,
+      mesaSim, mesaSimBg, mesaSimBorder, mesaSimColor,
+      mesaNaoBg, mesaNaoBorder, mesaNaoColor, mesaCountStr,
+
+      // analysis
+      reads, alternatives,
+
+      // history
+      setHistPartidas: () => this.setState({ histTab: 'partidas' }),
+      setHistRodadas: () => this.setState({ histTab: 'rodadas' }),
+      histPartidasBg: s.histTab === 'partidas' ? '#0e0f0c' : 'transparent',
+      histRodadasBg: s.histTab === 'rodadas' ? '#0e0f0c' : 'transparent',
+      histPartidasColor: s.histTab === 'partidas' ? '#ffffff' : '#454745',
+      histRodadasColor: s.histTab === 'rodadas' ? '#ffffff' : '#454745',
+      showPartidas: s.histTab === 'partidas',
+      showRodadas: s.histTab === 'rodadas',
+      rounds, matches,
+
+      // round end
+      scoreLines,
+      subtotalPts: fmt(subtotal),
+      timesTen: String(timesTenVal),
+      roundAdj: roundAdjVal > 0 ? '+' + roundAdjVal : '0',
+      roundColor: roundAdjVal > 0 ? '#2ead4b' : '#717570',
+      roundTotal: String(roundTotalVal),
+      newMine: String(newMine), newThem: String(themBefore),
+      matchWon,
+
+      // rail + chrome
+      navItems,
+      statusBarBg, statusBarColor, statusBarMute, homeBg, homeColor,
+    };
+  }
+}
+</script>
+</body>
+</html>

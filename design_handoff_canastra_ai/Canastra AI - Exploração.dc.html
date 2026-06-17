@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/wise-design-system-58fafb37-528b-45fc-b33b-e993b6574b87/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/wise-design-system-58fafb37-528b-45fc-b33b-e993b6574b87/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/wise-design-system-58fafb37-528b-45fc-b33b-e993b6574b87/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/wise-design-system-58fafb37-528b-45fc-b33b-e993b6574b87/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/wise-design-system-58fafb37-528b-45fc-b33b-e993b6574b87/tokens/shapes.css">
+  <link rel="stylesheet" href="_ds/wise-design-system-58fafb37-528b-45fc-b33b-e993b6574b87/tokens/base.css">
+  <style>
+    * { scrollbar-width: none; -ms-overflow-style: none; }
+    *::-webkit-scrollbar { display: none; }
+  </style>
+</helmet>
+
+<div style="background: #c2c6bf; min-height: 100vh; padding: 48px 48px 80px; font-family: var(--font-body)">
+
+  <!-- Page header -->
+  <div style="margin-bottom: 40px">
+    <p style="font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #717570; margin: 0 0 8px">Canastra AI · Exploração de layout</p>
+    <h1 style="font-family: var(--font-display); font-size: 32px; font-weight: 900; color: var(--color-ink); margin: 0 0 8px; line-height: 1.05">3 variações, mobile-first</h1>
+    <p style="font-size: 14px; color: #5a5e57; line-height: 1.5; margin: 0">390 × 844 px · toque nas cartas para selecionar · estado simulado: 12 cartas na mão, 2 sequências abertas</p>
+  </div>
+
+  <!-- Three phone frames -->
+  <div style="display: flex; gap: 48px; align-items: flex-start">
+
+    <!-- ═══════════════════════════════════════
+         A — Dashboard
+    ═══════════════════════════════════════ -->
+    <div style="flex-shrink: 0">
+      <div style="margin-bottom: 16px">
+        <p style="font-family: var(--font-display); font-size: 14px; font-weight: 900; color: var(--color-ink); margin: 0 0 4px">A — Dashboard</p>
+        <p style="font-size: 12px; color: #5a5e57; margin: 0; max-width: 320px; line-height: 1.4">Pontuação em destaque. IA no centro em painel fixo escuro. Mesa via abas no scroll.</p>
+      </div>
+
+      <div style="width: 390px; height: 844px; background: white; border-radius: 44px; overflow: hidden; border-width: 2px; border-style: solid; border-color: var(--color-ink); display: flex; flex-direction: column">
+
+        <!-- Status bar -->
+        <div style="height: 44px; background-color: var(--color-ink); display: flex; align-items: flex-end; justify-content: space-between; padding: 0 28px 8px; flex-shrink: 0">
+          <span style="font-size: 12px; color: rgba(255,255,255,0.45); font-weight: 500">9:41</span>
+          <span style="font-size: 11px; color: rgba(255,255,255,0.3)">●●● ▲ ▐</span>
+        </div>
+
+        <!-- App header (ink) -->
+        <div style="background-color: var(--color-ink); padding: 4px 22px 14px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0">
+          <span style="font-family: var(--font-display); font-size: 21px; font-weight: 900; color: var(--color-primary)">canastra ai</span>
+          <span style="font-size: 11px; color: rgba(255,255,255,0.35)">Rodada 3 · 2 baralhos</span>
+        </div>
+
+        <!-- Score band (sage) -->
+        <div style="background-color: var(--color-canvas-soft); padding: 12px 22px; flex-shrink: 0">
+          <div style="display: flex; align-items: center; justify-content: space-between">
+            <div>
+              <p style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--color-body); font-weight: 600; margin: 0 0 2px">Minha dupla</p>
+              <p style="font-family: var(--font-display); font-size: 30px; font-weight: 900; color: var(--color-ink); line-height: 1; margin: 0">240</p>
+            </div>
+            <div style="text-align: center">
+              <p style="font-size: 10px; color: var(--color-mute); margin: 0 0 2px">meta</p>
+              <p style="font-size: 15px; font-weight: 600; color: var(--color-body); margin: 0 0 4px">500</p>
+              <div style="background-color: var(--color-primary-pale); border-radius: 9999px; padding: 2px 9px; display: inline-block">
+                <span style="font-size: 9px; font-weight: 700; color: var(--color-ink-deep)">LIVRE</span>
+              </div>
+            </div>
+            <div style="text-align: right">
+              <p style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--color-body); font-weight: 600; margin: 0 0 2px">Adversários</p>
+              <p style="font-family: var(--font-display); font-size: 30px; font-weight: 900; color: var(--color-ink); line-height: 1; margin: 0">180</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Suggestion (ink band) -->
+        <div style="background-color: var(--color-ink); padding: 14px 22px; flex-shrink: 0">
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px">
+            <div style="width: 20px; height: 20px; background-color: var(--color-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+              <span style="font-size: 8px; color: var(--color-ink-deep); font-weight: 900">IA</span>
+            </div>
+            <span style="font-size: 10px; color: var(--color-primary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em">Sugestão</span>
+          </div>
+          <p style="font-family: var(--font-display); font-size: 17px; font-weight: 900; color: white; line-height: 1.2; margin: 0 0 6px">Jogue J♥ na sequência de copas</p>
+          <p style="font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.4; margin: 0">Estende para 5 cartas — a 2 da canastra. Adversários com 8 e 6 cartas, sem urgência.</p>
+        </div>
+
+        <!-- Context strip -->
+        <div style="background-color: var(--color-canvas-soft); padding: 8px 22px; display: flex; align-items: center; gap: 14px; flex-shrink: 0; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgba(14,15,12,0.07)">
+          <div style="display: flex; align-items: center; gap: 6px">
+            <span style="font-size: 9px; color: var(--color-body); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em">Lixo</span>
+            <div style="width: 28px; height: 38px; background-color: white; border-radius: 5px; border-width: 1px; border-style: solid; border-color: rgba(14,15,12,0.12); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px">
+              <span style="font-size: 9px; font-weight: 700; color: var(--color-ink); line-height: 1">Q</span>
+              <span style="font-size: 11px; color: var(--color-ink); line-height: 1">♠</span>
+            </div>
+          </div>
+          <div style="width: 1px; height: 24px; background-color: rgba(14,15,12,0.1)"></div>
+          <div style="display: flex; gap: 12px">
+            <div style="text-align: center">
+              <p style="font-size: 9px; color: var(--color-mute); text-transform: uppercase; letter-spacing: 0.05em; margin: 0">Monte</p>
+              <p style="font-size: 13px; font-weight: 600; color: var(--color-ink); margin: 0">45</p>
+            </div>
+            <div style="text-align: center">
+              <p style="font-size: 9px; color: var(--color-mute); text-transform: uppercase; letter-spacing: 0.05em; margin: 0">Pilha</p>
+              <p style="font-size: 13px; font-weight: 600; color: var(--color-ink); margin: 0">3</p>
+            </div>
+            <div style="text-align: center">
+              <p style="font-size: 9px; color: var(--color-mute); text-transform: uppercase; letter-spacing: 0.05em; margin: 0">Adv 1</p>
+              <p style="font-size: 13px; font-weight: 600; color: var(--color-ink); margin: 0">8</p>
+            </div>
+            <div style="text-align: center">
+              <p style="font-size: 9px; color: var(--color-mute); text-transform: uppercase; letter-spacing: 0.05em; margin: 0">Adv 2</p>
+              <p style="font-size: 13px; font-weight: 600; color: var(--color-ink); margin: 0">6</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main scrollable area -->
+        <div style="flex: 1; overflow-y: auto; background-color: white; display: flex; flex-direction: column">
+
+          <!-- Hand -->
+          <div style="padding: 12px 22px 8px; flex-shrink: 0">
+            <div style="display: flex; align-items: baseline; gap: 6px; margin-bottom: 8px">
+              <span style="font-size: 13px; font-weight: 600; color: var(--color-ink)">Minha mão</span>
+              <span style="font-size: 11px; color: var(--color-mute)">12 cartas</span>
+            </div>
+            <div style="overflow-x: auto; display: flex; gap: 5px; padding-bottom: 2px">
+              <sc-for list="{{ handCards }}" as="card" hint-placeholder-count="12">
+                <div
+                  onClick="{{ card.toggle }}"
+                  style="width: 42px; height: 58px; background-color: {{ card.bg }}; border-radius: 7px; border-width: 1.5px; border-style: solid; border-color: {{ card.borderColor }}; cursor: pointer; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; transition: transform 0.1s"
+                  style-active="transform: scale(0.9)"
+                >
+                  <span style="font-size: 12px; font-weight: 700; color: {{ card.color }}; line-height: 1">{{ card.val }}</span>
+                  <span style="font-size: 14px; color: {{ card.color }}; line-height: 1">{{ card.suitSymbol }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <!-- Mesa with tabs -->
+          <div style="padding: 8px 22px 16px; flex: 1">
+            <span style="font-size: 13px; font-weight: 600; color: var(--color-ink); display: block; margin-bottom: 8px">Mesa</span>
+            <div style="display: flex; background-color: var(--color-canvas-soft); border-radius: 8px; padding: 3px; gap: 3px; margin-bottom: 12px">
+              <div onClick="{{ setMesaTabA_mine }}" style="flex: 1; padding: 7px; border-radius: 6px; background-color: {{ tabAMineBg }}; text-align: center; cursor: pointer">
+                <span style="font-size: 12px; font-weight: 600; color: {{ tabAMineColor }}">Minhas</span>
+              </div>
+              <div onClick="{{ setMesaTabA_opp }}" style="flex: 1; padding: 7px; border-radius: 6px; background-color: {{ tabAOppBg }}; text-align: center; cursor: pointer">
+                <span style="font-size: 12px; font-weight: 600; color: {{ tabAOppColor }}">Adversários</span>
+              </div>
+            </div>
+            <sc-for list="{{ activeMesaSeqsA }}" as="seq" hint-placeholder-count="2">
+              <div style="display: flex; gap: 4px; margin-bottom: 8px; align-items: center">
+                <sc-for list="{{ seq.cards }}" as="sc" hint-placeholder-count="4">
+                  <div style="width: 32px; height: 44px; background-color: {{ sc.bg }}; border-radius: 5px; border-width: 1px; border-style: solid; border-color: {{ sc.borderColor }}; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; flex-shrink: 0">
+                    <span style="font-size: 10px; font-weight: 700; color: {{ sc.color }}; line-height: 1">{{ sc.val }}</span>
+                    <span style="font-size: 11px; color: {{ sc.color }}; line-height: 1">{{ sc.suitSymbol }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- Home indicator -->
+        <div style="height: 34px; background-color: white; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+          <div style="width: 120px; height: 4px; background-color: var(--color-ink); border-radius: 2px; opacity: 0.15"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         B — Foco na mesa
+    ═══════════════════════════════════════ -->
+    <div style="flex-shrink: 0">
+      <div style="margin-bottom: 16px">
+        <p style="font-family: var(--font-display); font-size: 14px; font-weight: 900; color: var(--color-ink); margin: 0 0 4px">B — Foco na mesa</p>
+        <p style="font-size: 12px; color: #5a5e57; margin: 0; max-width: 320px; line-height: 1.4">Mesa domina a tela — minhas e adversárias visíveis sem abas. IA como faixa verde acima da mão.</p>
+      </div>
+
+      <div style="width: 390px; height: 844px; background-color: white; border-radius: 44px; overflow: hidden; border-width: 2px; border-style: solid; border-color: var(--color-ink); display: flex; flex-direction: column">
+
+        <!-- Status bar (sage) -->
+        <div style="height: 44px; background-color: var(--color-canvas-soft); display: flex; align-items: flex-end; justify-content: space-between; padding: 0 28px 8px; flex-shrink: 0">
+          <span style="font-size: 12px; color: var(--color-body); font-weight: 500">9:41</span>
+          <span style="font-size: 11px; color: var(--color-mute)">●●● ▲ ▐</span>
+        </div>
+
+        <!-- Compact header (sage) -->
+        <div style="background-color: var(--color-canvas-soft); padding: 2px 22px 12px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgba(14,15,12,0.07)">
+          <span style="font-family: var(--font-display); font-size: 17px; font-weight: 900; color: var(--color-ink)">canastra ai</span>
+          <div style="display: flex; align-items: center; gap: 10px">
+            <div style="display: flex; align-items: baseline; gap: 4px">
+              <span style="font-family: var(--font-display); font-size: 18px; font-weight: 900; color: var(--color-ink)">240</span>
+              <span style="font-size: 11px; color: var(--color-mute)">vs</span>
+              <span style="font-family: var(--font-display); font-size: 18px; font-weight: 900; color: var(--color-ink)">180</span>
+            </div>
+            <div style="background-color: var(--color-primary-pale); border-radius: 9999px; padding: 3px 9px">
+              <span style="font-size: 9px; font-weight: 700; color: var(--color-ink-deep)">LIVRE</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mesa main area (scrollable) -->
+        <div style="flex: 1; overflow-y: auto; background-color: white; padding: 14px 22px">
+
+          <!-- Context row -->
+          <div style="display: flex; align-items: center; gap: 10px; padding: 9px 12px; background-color: var(--color-canvas-soft); border-radius: 12px; margin-bottom: 14px">
+            <div style="display: flex; align-items: center; gap: 6px; flex-shrink: 0">
+              <span style="font-size: 9px; font-weight: 600; color: var(--color-body); text-transform: uppercase; letter-spacing: 0.07em">Topo</span>
+              <div style="width: 26px; height: 36px; background-color: white; border-radius: 4px; border-width: 1px; border-style: solid; border-color: rgba(14,15,12,0.12); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px">
+                <span style="font-size: 9px; font-weight: 700; color: var(--color-ink)">Q</span>
+                <span style="font-size: 10px; color: var(--color-ink)">♠</span>
+              </div>
+            </div>
+            <div style="width: 1px; height: 26px; background-color: rgba(14,15,12,0.09); flex-shrink: 0"></div>
+            <div style="display: flex; gap: 10px">
+              <div style="text-align: center">
+                <p style="font-size: 9px; color: var(--color-mute); margin: 0">Monte</p>
+                <p style="font-size: 12px; font-weight: 600; color: var(--color-ink); margin: 0">45</p>
+              </div>
+              <div style="text-align: center">
+                <p style="font-size: 9px; color: var(--color-mute); margin: 0">Lixo</p>
+                <p style="font-size: 12px; font-weight: 600; color: var(--color-ink); margin: 0">3</p>
+              </div>
+              <div style="text-align: center">
+                <p style="font-size: 9px; color: var(--color-mute); margin: 0">Adv 1</p>
+                <p style="font-size: 12px; font-weight: 600; color: var(--color-ink); margin: 0">8</p>
+              </div>
+              <div style="text-align: center">
+                <p style="font-size: 9px; color: var(--color-mute); margin: 0">Adv 2</p>
+                <p style="font-size: 12px; font-weight: 600; color: var(--color-ink); margin: 0">6</p>
+              </div>
+              <div style="text-align: center">
+                <p style="font-size: 9px; color: var(--color-mute); margin: 0">Parceiro</p>
+                <p style="font-size: 12px; font-weight: 600; color: var(--color-ink); margin: 0">10</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- My seqs -->
+          <p style="font-size: 10px; font-weight: 600; color: var(--color-body); text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 8px">Minhas sequências</p>
+          <sc-for list="{{ mySeqGroups }}" as="seq" hint-placeholder-count="2">
+            <div style="display: flex; gap: 4px; margin-bottom: 8px; padding: 8px 10px; background-color: var(--color-canvas-soft); border-radius: 10px; align-items: center">
+              <sc-for list="{{ seq.cards }}" as="sc" hint-placeholder-count="4">
+                <div style="width: 34px; height: 48px; background-color: {{ sc.bg }}; border-radius: 6px; border-width: 1px; border-style: solid; border-color: {{ sc.borderColor }}; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; flex-shrink: 0">
+                  <span style="font-size: 11px; font-weight: 700; color: {{ sc.color }}; line-height: 1">{{ sc.val }}</span>
+                  <span style="font-size: 13px; color: {{ sc.color }}; line-height: 1">{{ sc.suitSymbol }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </sc-for>
+
+          <!-- Divider -->
+          <div style="height: 1px; background-color: rgba(14,15,12,0.07); margin: 10px 0 14px"></div>
+
+          <!-- Opp seqs -->
+          <p style="font-size: 10px; font-weight: 600; color: var(--color-body); text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 8px">Sequências dos adversários</p>
+          <sc-for list="{{ oppSeqGroups }}" as="seq" hint-placeholder-count="1">
+            <div style="display: flex; gap: 4px; margin-bottom: 8px; padding: 8px 10px; background-color: var(--color-canvas-soft); border-radius: 10px; align-items: center">
+              <sc-for list="{{ seq.cards }}" as="sc" hint-placeholder-count="5">
+                <div style="width: 34px; height: 48px; background-color: {{ sc.bg }}; border-radius: 6px; border-width: 1px; border-style: solid; border-color: {{ sc.borderColor }}; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; flex-shrink: 0">
+                  <span style="font-size: 11px; font-weight: 700; color: {{ sc.color }}; line-height: 1">{{ sc.val }}</span>
+                  <span style="font-size: 13px; color: {{ sc.color }}; line-height: 1">{{ sc.suitSymbol }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </sc-for>
+        </div>
+
+        <!-- AI strip (green) -->
+        <div style="background-color: var(--color-primary); padding: 10px 22px; flex-shrink: 0">
+          <div style="display: flex; align-items: flex-start; gap: 10px">
+            <div style="width: 18px; height: 18px; background-color: var(--color-ink); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px">
+              <span style="font-size: 7px; color: var(--color-primary); font-weight: 900">IA</span>
+            </div>
+            <div>
+              <p style="font-family: var(--font-display); font-size: 14px; font-weight: 900; color: var(--color-ink); line-height: 1.2; margin: 0 0 2px">Jogue J♥ na sequência de copas</p>
+              <p style="font-size: 11px; color: var(--color-ink-deep); line-height: 1.3; margin: 0">Estende para 5 — a 2 da canastra limpa.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hand (compact 2-row grid) -->
+        <div style="background-color: white; padding: 10px 22px 6px; flex-shrink: 0">
+          <div style="display: flex; align-items: baseline; gap: 6px; margin-bottom: 8px">
+            <span style="font-size: 12px; font-weight: 600; color: var(--color-ink)">Minha mão</span>
+            <span style="font-size: 11px; color: var(--color-mute)">12 cartas</span>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(6, 40px); gap: 4px">
+            <sc-for list="{{ handCards }}" as="card" hint-placeholder-count="12">
+              <div
+                onClick="{{ card.toggle }}"
+                style="width: 40px; height: 56px; background-color: {{ card.bg }}; border-radius: 7px; border-width: 1.5px; border-style: solid; border-color: {{ card.borderColor }}; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; transition: transform 0.1s"
+                style-active="transform: scale(0.9)"
+              >
+                <span style="font-size: 11px; font-weight: 700; color: {{ card.color }}; line-height: 1">{{ card.val }}</span>
+                <span style="font-size: 13px; color: {{ card.color }}; line-height: 1">{{ card.suitSymbol }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- Home indicator -->
+        <div style="height: 34px; background-color: white; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+          <div style="width: 120px; height: 4px; background-color: var(--color-ink); border-radius: 2px; opacity: 0.15"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         C — Assistente
+    ═══════════════════════════════════════ -->
+    <div style="flex-shrink: 0">
+      <div style="margin-bottom: 16px">
+        <p style="font-family: var(--font-display); font-size: 14px; font-weight: 900; color: var(--color-ink); margin: 0 0 4px">C — Assistente</p>
+        <p style="font-size: 12px; color: #5a5e57; margin: 0; max-width: 320px; line-height: 1.4">IA protagonista — painel escuro grande no topo. Botão de análise completa. Mão e mesa abaixo.</p>
+      </div>
+
+      <div style="width: 390px; height: 844px; background-color: white; border-radius: 44px; overflow: hidden; border-width: 2px; border-style: solid; border-color: var(--color-ink); display: flex; flex-direction: column">
+
+        <!-- Status bar (white) -->
+        <div style="height: 44px; background-color: white; display: flex; align-items: flex-end; justify-content: space-between; padding: 0 28px 8px; flex-shrink: 0">
+          <span style="font-size: 12px; color: var(--color-ink); font-weight: 500">9:41</span>
+          <span style="font-size: 11px; color: var(--color-mute)">●●● ▲ ▐</span>
+        </div>
+
+        <!-- Nav bar (white) -->
+        <div style="background-color: white; padding: 2px 22px 12px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgba(14,15,12,0.07)">
+          <span style="font-family: var(--font-display); font-size: 20px; font-weight: 900; color: var(--color-ink)">canastra ai</span>
+          <div style="text-align: right">
+            <div style="display: flex; align-items: baseline; gap: 4px; justify-content: flex-end">
+              <span style="font-size: 15px; font-weight: 700; color: var(--color-ink)">240</span>
+              <span style="font-size: 10px; color: var(--color-mute)">vs</span>
+              <span style="font-size: 15px; font-weight: 700; color: var(--color-ink)">180</span>
+            </div>
+            <p style="font-size: 10px; color: var(--color-mute); text-align: right; margin: 0">de 500 · Livre</p>
+          </div>
+        </div>
+
+        <!-- AI hero panel (ink) -->
+        <div style="background-color: var(--color-ink); padding: 18px 22px 16px; flex-shrink: 0">
+          <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px">
+            <div style="width: 22px; height: 22px; background-color: var(--color-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+              <span style="font-size: 8px; color: var(--color-ink-deep); font-weight: 900">IA</span>
+            </div>
+            <span style="font-size: 10px; color: var(--color-primary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em">Canastra AI sugere</span>
+          </div>
+          <p style="font-family: var(--font-display); font-size: 21px; font-weight: 900; color: white; line-height: 1.15; margin: 0 0 8px">Jogue J♥ na sequência de copas</p>
+          <p style="font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.45; margin: 0 0 14px">Estende copas para 5 cartas — a 2 da canastra limpa. Adversários com 8 e 6 cartas, sem urgência. Guarde o curinga para emergências.</p>
+          <div
+            style="display: inline-flex; align-items: center; background-color: var(--color-primary); border-radius: 9999px; padding: 8px 16px; cursor: pointer"
+            style-hover="background-color: var(--color-primary-active)"
+            style-active="background-color: var(--color-primary-neutral)"
+          >
+            <span style="font-size: 12px; font-weight: 600; color: var(--color-ink)">Ver análise completa →</span>
+          </div>
+        </div>
+
+        <!-- Context strip (sage) -->
+        <div style="background-color: var(--color-canvas-soft); padding: 8px 22px; display: flex; align-items: center; gap: 10px; flex-shrink: 0; overflow-x: auto">
+          <div style="display: flex; align-items: center; gap: 5px; flex-shrink: 0">
+            <span style="font-size: 9px; font-weight: 600; color: var(--color-body); text-transform: uppercase; letter-spacing: 0.06em">Topo</span>
+            <div style="width: 24px; height: 34px; background-color: white; border-radius: 4px; border-width: 1px; border-style: solid; border-color: rgba(14,15,12,0.12); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; flex-shrink: 0">
+              <span style="font-size: 8px; font-weight: 700; color: var(--color-ink)">Q</span>
+              <span style="font-size: 10px; color: var(--color-ink)">♠</span>
+            </div>
+          </div>
+          <div style="width: 1px; height: 24px; background-color: rgba(14,15,12,0.1); flex-shrink: 0"></div>
+          <div style="display: flex; gap: 10px; flex-shrink: 0">
+            <div style="text-align: center">
+              <p style="font-size: 9px; color: var(--color-mute); margin: 0">Monte</p>
+              <p style="font-size: 12px; font-weight: 600; color: var(--color-ink); margin: 0">45</p>
+            </div>
+            <div style="text-align: center">
+              <p style="font-size: 9px; color: var(--color-mute); margin: 0">Lixo</p>
+              <p style="font-size: 12px; font-weight: 600; color: var(--color-ink); margin: 0">3</p>
+            </div>
+            <div style="text-align: center">
+              <p style="font-size: 9px; color: var(--color-mute); margin: 0">Adv 1</p>
+              <p style="font-size: 12px; font-weight: 600; color: var(--color-ink); margin: 0">8</p>
+            </div>
+            <div style="text-align: center">
+              <p style="font-size: 9px; color: var(--color-mute); margin: 0">Adv 2</p>
+              <p style="font-size: 12px; font-weight: 600; color: var(--color-ink); margin: 0">6</p>
+            </div>
+            <div style="text-align: center">
+              <p style="font-size: 9px; color: var(--color-mute); margin: 0">Parceiro</p>
+              <p style="font-size: 12px; font-weight: 600; color: var(--color-ink); margin: 0">10</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main scrollable area -->
+        <div style="flex: 1; overflow-y: auto; background-color: white; display: flex; flex-direction: column">
+
+          <!-- Hand -->
+          <div style="padding: 12px 22px 8px">
+            <div style="display: flex; align-items: baseline; gap: 6px; margin-bottom: 8px">
+              <span style="font-size: 13px; font-weight: 600; color: var(--color-ink)">Minha mão</span>
+              <span style="font-size: 11px; color: var(--color-mute)">12 cartas</span>
+            </div>
+            <div style="overflow-x: auto; display: flex; gap: 5px; padding-bottom: 2px">
+              <sc-for list="{{ handCards }}" as="card" hint-placeholder-count="12">
+                <div
+                  onClick="{{ card.toggle }}"
+                  style="width: 42px; height: 58px; background-color: {{ card.bg }}; border-radius: 7px; border-width: 1.5px; border-style: solid; border-color: {{ card.borderColor }}; cursor: pointer; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; transition: transform 0.1s"
+                  style-active="transform: scale(0.9)"
+                >
+                  <span style="font-size: 12px; font-weight: 700; color: {{ card.color }}; line-height: 1">{{ card.val }}</span>
+                  <span style="font-size: 14px; color: {{ card.color }}; line-height: 1">{{ card.suitSymbol }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <!-- Mesa with tabs -->
+          <div style="padding: 8px 22px 16px; flex: 1">
+            <span style="font-size: 13px; font-weight: 600; color: var(--color-ink); display: block; margin-bottom: 8px">Mesa</span>
+            <div style="display: flex; background-color: var(--color-canvas-soft); border-radius: 8px; padding: 3px; gap: 3px; margin-bottom: 12px">
+              <div onClick="{{ setMesaTabC_mine }}" style="flex: 1; padding: 7px; border-radius: 6px; background-color: {{ tabCMineBg }}; text-align: center; cursor: pointer">
+                <span style="font-size: 12px; font-weight: 600; color: {{ tabCMineColor }}">Minhas</span>
+              </div>
+              <div onClick="{{ setMesaTabC_opp }}" style="flex: 1; padding: 7px; border-radius: 6px; background-color: {{ tabCOppBg }}; text-align: center; cursor: pointer">
+                <span style="font-size: 12px; font-weight: 600; color: {{ tabCOppColor }}">Adversários</span>
+              </div>
+            </div>
+            <sc-for list="{{ activeMesaSeqsC }}" as="seq" hint-placeholder-count="2">
+              <div style="display: flex; gap: 4px; margin-bottom: 8px; align-items: center">
+                <sc-for list="{{ seq.cards }}" as="sc" hint-placeholder-count="4">
+                  <div style="width: 32px; height: 44px; background-color: {{ sc.bg }}; border-radius: 5px; border-width: 1px; border-style: solid; border-color: {{ sc.borderColor }}; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; flex-shrink: 0">
+                    <span style="font-size: 10px; font-weight: 700; color: {{ sc.color }}; line-height: 1">{{ sc.val }}</span>
+                    <span style="font-size: 11px; color: {{ sc.color }}; line-height: 1">{{ sc.suitSymbol }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- Home indicator -->
+        <div style="height: 34px; background-color: white; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+          <div style="width: 120px; height: 4px; background-color: var(--color-ink); border-radius: 2px; opacity: 0.15"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1450, &quot;height&quot;: 1050}}">
+class Component extends DCLogic {
+  state = {
+    selectedCards: [],
+    mesaTabA: 'mine',
+    mesaTabC: 'mine',
+  };
+
+  getCardInfo(code, selected) {
+    if (code === 'W') {
+      return {
+        code,
+        val: 'W',
+        suit: '',
+        suitSymbol: '★',
+        isJoker: true,
+        isSelected: selected,
+        bg: selected ? '#cdffad' : '#9fe870',
+        color: '#163300',
+        borderColor: '#0e0f0c',
+      };
+    }
+    const suit = code[code.length - 1];
+    const rawVal = code.slice(0, code.length - 1);
+    const val = rawVal === 'T' ? '10' : rawVal;
+    const suitMap = { S: '♠', H: '♥', C: '♣', D: '♦' };
+    const suitSymbol = suitMap[suit] || '';
+    const isRed = suit === 'H' || suit === 'D';
+    return {
+      code,
+      val,
+      suit,
+      suitSymbol,
+      isJoker: false,
+      isSelected: selected,
+      bg: selected ? '#9fe870' : '#ffffff',
+      color: isRed ? '#d03238' : '#0e0f0c',
+      borderColor: selected ? '#0e0f0c' : 'rgba(14,15,12,0.12)',
+    };
+  }
+
+  renderVals() {
+    const handCodes = ['JH', '6C', '7C', '8C', '3S', '4S', 'W', 'QH', 'KH', '2D', '9C', 'QS'];
+    const sel = this.state.selectedCards;
+
+    const toggleCard = (code) => {
+      this.setState((s) => ({
+        selectedCards: s.selectedCards.includes(code)
+          ? s.selectedCards.filter((c) => c !== code)
+          : [...s.selectedCards, code],
+      }));
+    };
+
+    const handCards = handCodes.map((c) => ({
+      ...this.getCardInfo(c, sel.includes(c)),
+      toggle: () => toggleCard(c),
+    }));
+
+    const makeGroup = (codes) => ({
+      cards: codes.map((c) => this.getCardInfo(c, false)),
+    });
+
+    const mySeqGroups = [
+      makeGroup(['7H', '8H', '9H', 'TH']),
+      makeGroup(['AS', 'AD', 'AH']),
+    ];
+    const oppSeqGroups = [makeGroup(['3D', '4D', '5D', '6D', '7D'])];
+
+    const { mesaTabA, mesaTabC } = this.state;
+
+    return {
+      handCards,
+      mySeqGroups,
+      oppSeqGroups,
+
+      // Variant A tabs
+      activeMesaSeqsA: mesaTabA === 'mine' ? mySeqGroups : oppSeqGroups,
+      tabAMineBg: mesaTabA === 'mine' ? '#ffffff' : 'transparent',
+      tabAOppBg: mesaTabA === 'opp' ? '#ffffff' : 'transparent',
+      tabAMineColor: mesaTabA === 'mine' ? '#0e0f0c' : '#454745',
+      tabAOppColor: mesaTabA === 'opp' ? '#0e0f0c' : '#454745',
+      setMesaTabA_mine: () => this.setState({ mesaTabA: 'mine' }),
+      setMesaTabA_opp: () => this.setState({ mesaTabA: 'opp' }),
+
+      // Variant C tabs
+      activeMesaSeqsC: mesaTabC === 'mine' ? mySeqGroups : oppSeqGroups,
+      tabCMineBg: mesaTabC === 'mine' ? '#ffffff' : 'transparent',
+      tabCOppBg: mesaTabC === 'opp' ? '#ffffff' : 'transparent',
+      tabCMineColor: mesaTabC === 'mine' ? '#0e0f0c' : '#454745',
+      tabCOppColor: mesaTabC === 'opp' ? '#0e0f0c' : '#454745',
+      setMesaTabC_mine: () => this.setState({ mesaTabC: 'mine' }),
+      setMesaTabC_opp: () => this.setState({ mesaTabC: 'opp' }),
+    };
+  }
+}
+</script>
+</body>
+</html>
