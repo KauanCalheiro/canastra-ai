@@ -67,5 +67,16 @@ const deckOptions = [
         <BaseSegmentedControl v-model="deckCount" :options="deckOptions" />
       </BaseCard>
     </section>
+
+    <section class="mb-8">
+      <h2 class="mb-1 font-body font-semibold text-[24px] text-ink">Playing Card</h2>
+      <p class="mb-4 font-body text-[14px] text-body">Black suit, red suit, joker and face-down.</p>
+      <BaseCard class="flex gap-3">
+        <BasePlayingCard rank="K" suit="spades" />
+        <BasePlayingCard rank="7" suit="hearts" />
+        <BasePlayingCard is-joker />
+        <BasePlayingCard face-down />
+      </BaseCard>
+    </section>
   </div>
 </template>
