@@ -26,5 +26,16 @@
         </BaseCard>
       </div>
     </section>
+
+    <section class="mb-8">
+      <h2 class="mb-1 font-body font-semibold text-[24px] text-ink">Badge</h2>
+      <p class="mb-4 font-body text-[14px] text-body">Positive, negative, livre and obriga states.</p>
+      <BaseCard class="flex gap-3">
+        <BaseBadge variant="positive">Positive</BaseBadge>
+        <BaseBadge variant="negative">Negative</BaseBadge>
+        <BaseBadge variant="livre">Livre</BaseBadge>
+        <BaseBadge variant="obriga">Obriga</BaseBadge>
+      </BaseCard>
+    </section>
   </div>
 </template>
