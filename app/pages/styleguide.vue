@@ -3,6 +3,12 @@ import { ref } from 'vue'
 
 const inputValue = ref('')
 const stepperValue = ref(2)
+const deckCount = ref('2')
+const deckOptions = [
+  { label: '1', value: '1' },
+  { label: '2', value: '2' },
+  { label: '3', value: '3' }
+]
 </script>
 
 <template>
@@ -51,6 +57,14 @@ const stepperValue = ref(2)
       <BaseCard class="flex items-center gap-6">
         <BaseInput v-model="inputValue" placeholder="Nome do jogador" />
         <BaseStepper v-model="stepperValue" :step="100" />
+      </BaseCard>
+    </section>
+
+    <section class="mb-8">
+      <h2 class="mb-1 font-body font-semibold text-[24px] text-ink">Segmented Control</h2>
+      <p class="mb-4 font-body text-[14px] text-body">Number-of-decks selector, interactive.</p>
+      <BaseCard>
+        <BaseSegmentedControl v-model="deckCount" :options="deckOptions" />
       </BaseCard>
     </section>
   </div>
