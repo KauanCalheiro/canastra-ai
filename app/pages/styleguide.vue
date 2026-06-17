@@ -13,5 +13,18 @@
         <BaseButton variant="outline">Outline</BaseButton>
       </BaseCard>
     </section>
+
+    <section class="mb-8">
+      <h2 class="mb-1 font-body font-semibold text-[24px] text-ink">Card</h2>
+      <p class="mb-4 font-body text-[14px] text-body">White and sage surfaces.</p>
+      <div class="flex gap-4">
+        <BaseCard surface="white">
+          <p class="font-body text-[14px] text-ink">White card</p>
+        </BaseCard>
+        <BaseCard surface="sage">
+          <p class="font-body text-[14px] text-ink">Sage card</p>
+        </BaseCard>
+      </div>
+    </section>
   </div>
 </template>
