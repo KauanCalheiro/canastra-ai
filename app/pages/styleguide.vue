@@ -78,5 +78,16 @@ const deckOptions = [
         <BasePlayingCard face-down />
       </BaseCard>
     </section>
+
+    <section class="mb-8">
+      <h2 class="mb-1 font-body font-semibold text-[24px] text-ink">Player Chip</h2>
+      <p class="mb-4 font-body text-[14px] text-body">Team A / Team B, active and inactive.</p>
+      <BaseCard class="flex gap-6">
+        <BasePlayerChip initial="A" name="Ana" team="A" :active="true" />
+        <BasePlayerChip initial="B" name="Bruno" team="A" :active="false" />
+        <BasePlayerChip initial="C" name="Carla" team="B" :active="true" />
+        <BasePlayerChip initial="D" name="Diego" team="B" :active="false" />
+      </BaseCard>
+    </section>
   </div>
 </template>
