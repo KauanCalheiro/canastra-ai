@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Data;
+namespace App\Data\Game;
 
 use Spatie\LaravelData\Attributes\Validation\ArrayType;
 use Spatie\LaravelData\Attributes\Validation\In;

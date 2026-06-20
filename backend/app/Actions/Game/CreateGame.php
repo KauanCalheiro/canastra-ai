@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Actions;
+namespace App\Actions\Game;
 
-use App\Data\CreateGameData;
-use App\Data\GameData;
+use App\Data\Game\CreateGameData;
+use App\Data\Game\GameData;
 use App\Models\Game;
 use App\Models\Player;
 use Illuminate\Support\Facades\DB;
@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 
 class CreateGame
 {
-    public function __invoke(CreateGameData $data): GameData
+    public function handle(CreateGameData $data): GameData
     {
         $game = DB::transaction(function () use ($data) {
             $game = Game::create([
