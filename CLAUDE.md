@@ -7,3 +7,4 @@ Memórias e convenções do projeto ficam em `./memory/`. Antes de tomar decisõ
 | [memory/git.md](memory/git.md) | Git | Convenções de mensagem de commit (uma linha, prefixo semântico, sem menção ao Claude) |
 | [memory/canastra.md](memory/canastra.md) | Regras da Canastra | Regras oficiais do jogo (pontuação, canastras, curingas, obriga, contagem de pontos) usadas como contexto para a IA |
 | [memory/design.md](memory/design.md) | Design | Design tokens e diretrizes visuais (cores, tipografia, raios) usados no styleguide do frontend |
+| [memory/backend.md](memory/backend.md) | Backend (Laravel) | Sempre comece pelo teste (Pest/TDD); padrão Controller→Action(handle)→Data→Resource para todas as features da API |
