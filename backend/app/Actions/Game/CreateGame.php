@@ -11,41 +11,59 @@ use Illuminate\Support\Str;
 
 class CreateGame
 {
-    public function handle(CreateGameData $data): GameData
-    {
-        $game = DB::transaction(function () use ($data) {
-            $game = $this->createGame($data);
-            $this->batchCreatePlayer($game, $data->players);
+    public ?Game $game = null;
 
-            return $game;
+    /** @var Player[] */
+    public array $players = [];
+
+    public function __construct(
+        protected CreateGameData $data,
+    ) {}
+
+    public static function make(CreateGameData $data): self
+    {
+        return new self($data);
+    }
+
+    public function handle(): GameData
+    {
+        DB::transaction(function () {
+            $this->createGame();
+            $this->batchCreatePlayer();
         });
 
-        return GameData::from($game);
+        return GameData::from($this->game);
     }
 
-    public function createGame(CreateGameData $data): Game
+    public function createGame(): Game
     {
-        return Game::create([
+        $this->game = Game::create([
             'id' => Str::uuid(),
-            'decks' => $data->decks,
-            'target_score' => $data->targetScore,
+            'decks' => $this->data->decks,
+            'target_score' => $this->data->targetScore,
         ]);
+
+        return $this->game;
     }
 
-    public function batchCreatePlayer(Game $game, array $players): void
+    public function batchCreatePlayer(): void
     {
-        foreach ($players as $seatIndex => $name) {
-            $this->createPlayer($game, $seatIndex, $name);
+        foreach ($this->data->players as $seatIndex => $name) {
+            $this->createPlayer($seatIndex, $name);
         }
     }
 
-    public function createPlayer(Game $game, int $seatIndex, string $name): Player
+    public function createPlayer(int $seatIndex, string $name): Player
     {
-        return Player::create([
+        $player = Player::create([
             'id' => Str::uuid(),
-            'game_id' => $game->id,
+            'game_id' => $this->game->id,
             'seat_index' => $seatIndex,
             'name' => $name,
         ]);
+
+        $this->players[] = $player;
+
+        return $player;
     }
 }

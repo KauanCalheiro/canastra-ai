@@ -11,9 +11,9 @@ use Illuminate\Http\Response;
 
 class GameController extends Controller
 {
-    public function store(CreateGameData $data, CreateGame $createGame): JsonResponse
+    public function store(CreateGameData $data): JsonResponse
     {
-        $game = $createGame->handle($data);
+        $game = CreateGame::make($data)->handle();
 
         return GameResource::make($game)->response()->setStatusCode(Response::HTTP_CREATED);
     }
