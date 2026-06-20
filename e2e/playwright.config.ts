@@ -17,7 +17,7 @@ export default defineConfig({
     {
       command: 'pnpm dev',
       cwd: '../frontend',
-      url: 'http://localhost:3000',
+      url: 'http://localhost:3000/games/new',
       reuseExistingServer: !process.env.CI,
       timeout: 60000,
       env: { NUXT_BACKEND_URL: 'http://localhost:8000' }

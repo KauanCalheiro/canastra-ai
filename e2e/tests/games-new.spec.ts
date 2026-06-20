@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test'
 
 test('cria uma partida e navega para a tela de mão inicial', async ({ page }) => {
   await test.step('acessa a página de nova partida', async () => {
-    await page.goto('/games/new')
+    await page.goto('/games/new', { waitUntil: 'networkidle' })
   })
 
   await test.step('preenche o nome dos jogadores', async () => {
@@ -11,8 +11,8 @@ test('cria uma partida e navega para a tela de mão inicial', async ({ page }) =
     await nameInputs.nth(1).fill('Bruno')
   })
 
-  await test.step('seleciona a pontuação alvo', async () => {
-    await page.getByTestId('target-score-option-3').click()
+  await test.step('seleciona o número de baralhos', async () => {
+    await page.getByTestId('decks-option-3').click()
   })
 
   await test.step('confirma a criação da partida', async () => {
