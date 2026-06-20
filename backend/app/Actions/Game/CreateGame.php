@@ -8,9 +8,12 @@ use App\Models\Game;
 use App\Models\Player;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Lorisleiva\Actions\Concerns\AsAction;
 
 class CreateGame
 {
+    use AsAction;
+
     public ?Game $game = null;
 
     /** @var Player[] */
@@ -19,11 +22,6 @@ class CreateGame
     public function __construct(
         protected CreateGameData $data,
     ) {}
-
-    public static function make(CreateGameData $data): self
-    {
-        return new self($data);
-    }
 
     public function handle(): GameData
     {
