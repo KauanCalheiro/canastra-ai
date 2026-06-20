@@ -1,75 +1,78 @@
-# Nuxt Minimal Starter
+# Canastra AI
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Monorepo com três projetos independentes (cada um com seu próprio gerenciador de dependências, sem workspace compartilhado):
 
-## Setup
+| Pasta | Stack | O que é |
+|---|---|---|
+| `frontend/` | Nuxt 4 + Vue | UI. Nunca chama o backend direto — sempre via rota server-side do Nuxt (proxy). |
+| `backend/` | Laravel 13 + PHP | API (`/api/*`), persistência (SQLite). |
+| `e2e/` | Playwright | Testes end-to-end, fora do `frontend/`. |
 
-Make sure to install dependencies:
+Convenções de cada parte (TDD, padrão Action/Data/Resource, data-testid, etc.) estão documentadas em `./memory/` — ver tabela no [CLAUDE.md](CLAUDE.md).
+
+## Pré-requisitos
+
+- Node.js + [pnpm](https://pnpm.io/)
+- PHP 8.3+ e [Composer](https://getcomposer.org/)
+
+## Backend (Laravel)
 
 ```bash
-# npm
-npm install
+cd backend
+composer install
+cp .env.example .env   # se ainda não existir
+php artisan key:generate
+php artisan migrate
+php artisan serve --port=8000
+```
 
-# pnpm
+A API fica em `http://localhost:8000` (rotas em `/api/*`).
+
+Rodar os testes (Pest):
+
+```bash
+cd backend
+./vendor/bin/pest
+```
+
+## Frontend (Nuxt)
+
+```bash
+cd frontend
 pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
 pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
-
-Build the application for production:
+O frontend sobe em `http://localhost:3000` e espera o backend em `http://localhost:8000` por padrão. Para apontar para outra URL, defina a env var `NUXT_BACKEND_URL` antes de rodar:
 
 ```bash
-# npm
-npm run build
+NUXT_BACKEND_URL=http://localhost:8000 pnpm dev
+```
 
-# pnpm
+Build de produção:
+
+```bash
 pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
 ```
 
-Locally preview production build:
+## Rodando tudo junto
+
+Em três terminais (ou usando os testes e2e, que já sobem os dois automaticamente — veja abaixo):
 
 ```bash
-# npm
-npm run preview
+# terminal 1
+cd backend && php artisan serve --port=8000
 
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
+# terminal 2
+cd frontend && pnpm dev
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+## Testes end-to-end (Playwright)
+
+```bash
+cd e2e
+pnpm install
+pnpm test
+```
+
+O `e2e/playwright.config.ts` sobe automaticamente o backend (`php artisan serve`) e o frontend (`pnpm dev`) antes de rodar os testes — não é necessário iniciá-los manualmente.
