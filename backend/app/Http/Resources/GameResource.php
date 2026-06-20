@@ -2,11 +2,11 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Game;
+use App\Data\GameData;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/** @mixin Game */
+/** @mixin GameData */
 class GameResource extends JsonResource
 {
     /**
