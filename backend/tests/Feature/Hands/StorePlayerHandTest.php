@@ -96,8 +96,15 @@ it('replaces a previously registered hand, releasing the old cards back to the d
 });
 
 it('does not let a player claim cards belonging to a different game', function () {
-    [$gameIdOne, $playersOne] = createTestGame(decks: 1, players: ['Ana', 'Bruno']);
+    // Game two is created FIRST so its deck rows get the lower row IDs.
+    // Game one (the one that actually claims a hand) is created SECOND.
+    // With `decks: 1` on both, every ranked code collides between the two
+    // decks. If the `where('game_id', ...)` scoping were ever removed from
+    // StorePlayerHand::claimCards(), an unscoped query with no ORDER BY would
+    // resolve against SQLite's natural rowid order and claim game two's
+    // lower-ID rows instead of game one's — so this test would then fail.
     [$gameIdTwo, $playersTwo] = createTestGame(decks: 1, players: ['Carla', 'Diego']);
+    [$gameIdOne, $playersOne] = createTestGame(decks: 1, players: ['Ana', 'Bruno']);
 
     $player = $playersOne->first();
     $cards = ['AS', '2S', '3S', '4S', '5S', '6S', '7S', '8S', '9S', 'TS', 'JS', 'QS', 'KS'];
@@ -105,6 +112,17 @@ it('does not let a player claim cards belonging to a different game', function (
     $response = $this->postJson("/api/players/{$player->id}/hand", ['cards' => $cards]);
 
     $response->assertOk();
+
+    // Player one only ever holds cards from their own game.
+    $playerOneGameIds = Card::where('player_id', $player->id)->pluck('game_id')->unique();
+    expect($playerOneGameIds->all())->toBe([$gameIdOne]);
+
+    // Game one's own deck supplied all 13 claimed cards.
     expect(Card::where('game_id', $gameIdOne)->where('status', 'hand')->count())->toBe(13);
+
+    // Game two's deck is completely untouched: none of its matching-code
+    // rows were claimed, and nothing in it was ever assigned to player one.
     expect(Card::where('game_id', $gameIdTwo)->where('status', 'hand')->count())->toBe(0);
+    expect(Card::where('game_id', $gameIdTwo)->where('status', 'deck')->count())->toBe(54);
+    expect(Card::where('game_id', $gameIdTwo)->where('player_id', $player->id)->count())->toBe(0);
 });
