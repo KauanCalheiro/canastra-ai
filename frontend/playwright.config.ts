@@ -9,9 +9,6 @@ export default defineConfig({
     command: 'pnpm dev',
     url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI,
-    timeout: 60000,
-    env: {
-      DB_PATH: '.data/e2e-test.sqlite'
-    }
+    timeout: 60000
   }
 })
