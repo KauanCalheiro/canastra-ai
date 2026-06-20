@@ -10,7 +10,8 @@ Use este padrão para todas as features da API:
 
 - **Controller**: só chama a Action correspondente. Não tem lógica de negócio.
 - **Action**: classe nomeada com o nome da ação (ex: `CreateGame`), **sem sufixo `Service`**. Fica em `app/Actions/<Domínio>/<Ação>.php` (namespace `App\Actions\<Domínio>`). Não usa `__invoke` — usa um método `handle()`.
-  - Construtor recebe o Data de entrada (`protected CreateGameData $data`) e expõe um construtor estático fluente `make($data)`.
+  - Construtor recebe o Data de entrada (`protected CreateGameData $data`).
+  - Usa a trait `Lorisleiva\Actions\Concerns\AsAction` (pacote `lorisleiva/laravel-actions`) para ganhar o `make()` fluente de graça — não escrever um `make()` próprio em cada Action.
   - Estado intermediário (models criados) fica em propriedades públicas da Action (ex: `public ?Game $game`, `public array $players = []`), preenchidas por métodos auxiliares dedicados (ex: `createGame()`, `batchCreatePlayer()`, `createPlayer()`).
   - Uso: `CreateGame::make($data)->handle()`.
 - **Data (entrada)**: usa `spatie/laravel-data`. Fica em `app/Data/<Domínio>/<Ação>Data.php` (ex: `CreateGameData`). Tipa e valida a entrada da request — é resolvida e validada automaticamente quando type-hintada no método do controller.
