@@ -5,10 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable(['id', 'game_id', 'seat_index', 'name'])]
-class Player extends Model
+#[Fillable(['id', 'game_id', 'code', 'status', 'player_id'])]
+class Card extends Model
 {
     public $incrementing = false;
 
@@ -19,8 +18,8 @@ class Player extends Model
         return $this->belongsTo(Game::class);
     }
 
-    public function cards(): HasMany
+    public function player(): BelongsTo
     {
-        return $this->hasMany(Card::class);
+        return $this->belongsTo(Player::class);
     }
 }
