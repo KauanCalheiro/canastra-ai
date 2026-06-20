@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Card;
 use App\Models\Game;
 use App\Models\Player;
 
@@ -69,4 +70,34 @@ it('rejects a player count outside 2 or 4', function () {
     ]);
 
     $response->assertStatus(422);
+});
+
+it('creates a full deck of cards for a 2-deck game', function () {
+    $response = $this->postJson('/api/games', [
+        'decks' => 2,
+        'targetScore' => 3000,
+        'players' => ['Ana', 'Bruno'],
+    ]);
+
+    $id = $response->json('id');
+    $cards = Card::where('game_id', $id)->get();
+
+    expect($cards)->toHaveCount(108);
+    expect($cards->where('status', 'deck'))->toHaveCount(108);
+    expect($cards->where('player_id', null))->toHaveCount(108);
+    expect($cards->where('code', 'W'))->toHaveCount(4);
+    expect($cards->where('code', 'AS'))->toHaveCount(2);
+});
+
+it('creates a single deck worth of cards for a 1-deck game', function () {
+    $response = $this->postJson('/api/games', [
+        'decks' => 1,
+        'targetScore' => 1500,
+        'players' => ['Ana', 'Bruno'],
+    ]);
+
+    $id = $response->json('id');
+
+    expect(Card::where('game_id', $id)->count())->toBe(54);
+    expect(Card::where('game_id', $id)->where('code', 'W')->count())->toBe(2);
 });

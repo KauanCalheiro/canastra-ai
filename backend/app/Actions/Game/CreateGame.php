@@ -4,6 +4,7 @@ namespace App\Actions\Game;
 
 use App\Data\Game\CreateGameData;
 use App\Data\Game\GameData;
+use App\Models\Card;
 use App\Models\Game;
 use App\Models\Player;
 use Illuminate\Support\Facades\DB;
@@ -28,6 +29,7 @@ class CreateGame
         DB::transaction(function () {
             $this->createGame();
             $this->batchCreatePlayer();
+            $this->createDeck();
         });
 
         return GameData::from($this->game);
@@ -63,5 +65,43 @@ class CreateGame
         $this->players[] = $player;
 
         return $player;
+    }
+
+    public function createDeck(): void
+    {
+        $ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K'];
+        $suits = ['S', 'H', 'C', 'D'];
+
+        $cards = [];
+
+        for ($deck = 0; $deck < $this->data->decks; $deck++) {
+            foreach ($suits as $suit) {
+                foreach ($ranks as $rank) {
+                    $cards[] = [
+                        'id' => (string) Str::uuid(),
+                        'game_id' => $this->game->id,
+                        'code' => $rank.$suit,
+                        'status' => 'deck',
+                        'player_id' => null,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                }
+            }
+
+            for ($joker = 0; $joker < 2; $joker++) {
+                $cards[] = [
+                    'id' => (string) Str::uuid(),
+                    'game_id' => $this->game->id,
+                    'code' => 'W',
+                    'status' => 'deck',
+                    'player_id' => null,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }
+        }
+
+        Card::insert($cards);
     }
 }
