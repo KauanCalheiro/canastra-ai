@@ -1,5 +1,5 @@
 {
-  "name": "app",
+  "name": "frontend",
   "type": "module",
   "private": true,
   "scripts": {
@@ -21,6 +21,7 @@
   "pnpm": {
     "onlyBuiltDependencies": [
       "@parcel/watcher",
+      "better-sqlite3",
       "esbuild"
     ]
   },

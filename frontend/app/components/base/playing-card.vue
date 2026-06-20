@@ -23,8 +23,8 @@ const isRedSuit = props.suit === 'hearts' || props.suit === 'diamonds'
 
 <template>
   <div
-    class="flex h-[60px] w-[42px] flex-col items-center justify-center rounded-card-face border border-ink font-body font-bold"
-    :class="faceDown ? 'bg-ink' : 'bg-white'"
+    class="flex h-[60px] w-[42px] flex-col items-center justify-center rounded-card-face border font-body font-bold"
+    :class="faceDown ? 'border-ink bg-ink' : 'border-ink/15 bg-white'"
   >
     <template v-if="!faceDown">
       <span v-if="isJoker" class="text-[18px] text-primary">W</span>
