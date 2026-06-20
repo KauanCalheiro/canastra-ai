@@ -19,6 +19,12 @@ logs
 .idea
 .worktrees
 
+# Playwright
+test-results
+playwright-report
+blob-report
+playwright/.cache
+
 # Local env files
 .env
 .env.*
