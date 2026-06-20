@@ -14,17 +14,17 @@ class CreateGame
 {
     use AsAction;
 
+    protected CreateGameData $data;
+
     public ?Game $game = null;
 
     /** @var Player[] */
     public array $players = [];
 
-    public function __construct(
-        protected CreateGameData $data,
-    ) {}
-
-    public function handle(): GameData
+    public function handle(CreateGameData $data): GameData
     {
+        $this->data = $data;
+
         DB::transaction(function () {
             $this->createGame();
             $this->batchCreatePlayer();
