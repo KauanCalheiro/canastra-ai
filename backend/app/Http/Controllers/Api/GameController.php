@@ -13,7 +13,7 @@ class GameController extends Controller
 {
     public function store(CreateGameData $data): JsonResponse
     {
-        $game = CreateGame::make()->handle($data);
+        $game = CreateGame::run($data);
 
         return GameResource::make($game)->response()->setStatusCode(Response::HTTP_CREATED);
     }
