@@ -22,4 +22,9 @@ class Game extends Model
     {
         return $this->hasMany(Card::class);
     }
+
+    public function sequences(): HasMany
+    {
+        return $this->hasMany(Sequence::class);
+    }
 }
