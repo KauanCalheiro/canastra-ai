@@ -10,3 +10,4 @@ Route::get('/games/{game}', [GameController::class, 'show']);
 Route::post('/players/{player}/hand', [PlayerHandController::class, 'store']);
 Route::post('/games/{game}/sequences', [SequenceController::class, 'store']);
 Route::post('/sequences/{sequence}/cards', [SequenceController::class, 'extend']);
+Route::post('/sequences/{sequence}/cards/{position}/swap', [SequenceController::class, 'swap']);
