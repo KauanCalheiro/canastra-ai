@@ -14,6 +14,13 @@ class Sequence extends Model
 
     protected $keyType = 'string';
 
+    protected function casts(): array
+    {
+        return [
+            'is_ace_trinca' => 'boolean',
+        ];
+    }
+
     public function game(): BelongsTo
     {
         return $this->belongsTo(Game::class);
