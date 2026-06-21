@@ -55,6 +55,7 @@ it('rejects a hand that asks for more copies of a card than the deck holds', fun
     $response = $this->postJson("/api/players/{$player->id}/hand", ['cards' => $cards]);
 
     $response->assertStatus(422);
+    expect($response->json('error'))->toBe('insufficient_cards_in_pool');
     expect(Card::where('player_id', $player->id)->count())->toBe(0);
 });
 

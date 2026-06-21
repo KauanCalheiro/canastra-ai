@@ -1,5 +1,6 @@
 <?php
 
+use App\Exceptions\DomainException;
 use App\Http\Middleware\ForceJsonResponse;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -20,4 +21,12 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request) => $request->is('api/*'),
         );
+
+        $exceptions->renderable(function (DomainException $e) {
+            return response()->json([
+                'error' => $e->errorCode(),
+                'message' => $e->getMessage(),
+                'context' => $e->context(),
+            ], $e->status());
+        });
     })->create();

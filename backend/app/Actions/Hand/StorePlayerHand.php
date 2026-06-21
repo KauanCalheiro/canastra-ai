@@ -3,10 +3,10 @@
 namespace App\Actions\Hand;
 
 use App\Data\Hand\StoreHandData;
+use App\Exceptions\InsufficientCardsInPoolException;
 use App\Models\Card;
 use App\Models\Player;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\ValidationException;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class StorePlayerHand
@@ -47,9 +47,7 @@ class StorePlayerHand
                 ->get();
 
             if ($rows->count() < $quantity) {
-                throw ValidationException::withMessages([
-                    'cards' => "Não há cópias suficientes de \"{$code}\" disponíveis no baralho desta partida.",
-                ]);
+                throw new InsufficientCardsInPoolException($code, $quantity, $rows->count());
             }
 
             Card::whereIn('id', $rows->pluck('id'))
