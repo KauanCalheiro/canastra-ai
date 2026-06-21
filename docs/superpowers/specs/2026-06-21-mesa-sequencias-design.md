@@ -69,6 +69,36 @@ Depois de resolver os papéis de todas as cartas da sequência (existentes + nov
 - não pode coexistir 1 coringão + 1 coringuinha-curinga na mesma sequência.
 - mínimo de **3** cartas para abrir uma sequência nova.
 
+## Exceptions e handler global
+
+Toda violação de regra de negócio (depende do estado do banco/jogo, não só da forma da request) lança uma **exception específica**, não um `ValidationException::withMessages()` genérico — dá controle global sobre o formato de erro da API. Convenção registrada em `memory/backend.md`.
+
+- `App\Exceptions\DomainException` (abstrata, nova): expõe `status(): int` (default 422), `errorCode(): string` (default: snake_case do nome da classe), `context(): array` (default `[]`).
+- Handler global em `bootstrap/app.php`, dentro de `withExceptions()`: `$exceptions->renderable(fn (DomainException $e) => response()->json(['error' => $e->errorCode(), 'message' => $e->getMessage(), 'context' => $e->context()], $e->status()))`. Um único lugar mapeando qualquer `DomainException` pra uma resposta JSON consistente.
+- `ValidationException` do Laravel continua normal para validação de *forma* (tipo/tamanho/regex dos campos do `Data` de entrada via `rules()`) — não muda.
+
+### Exceptions desta feature
+
+| Exception | `errorCode()` | Quando |
+|---|---|---|
+| `App\Exceptions\InsufficientCardsInPoolException` | `insufficient_cards_in_pool` | Dupla (ou, no caso da mão, o próprio jogador) não tem disponibilidade suficiente de um código pedido. **Compartilhada** — também substitui o `ValidationException` hoje lançado por `StorePlayerHand` (retrofit, ver abaixo). |
+| `App\Exceptions\PlayerNotInTeamException` | `player_not_in_team` | `playerId` informado não pertence à dupla `team` resolvida/esperada. |
+| `App\Exceptions\Sequence\SequenceTooShortException` | `sequence_too_short` | Menos de 3 cartas ao criar uma sequência nova. |
+| `App\Exceptions\Sequence\InvalidSequenceCardException` | `invalid_sequence_card` | Carta não combina com o rank/naipe esperado na posição e não é um curinga válido. |
+| `App\Exceptions\Sequence\InvalidAceTrincaCardException` | `invalid_ace_trinca_card` | Trinca de ases recebeu carta que não é Ás, ou um curinga. |
+| `App\Exceptions\Sequence\MaxWildJokerExceededException` | `max_wild_joker_exceeded` | Mais de 1 coringão na sequência. |
+| `App\Exceptions\Sequence\MaxWildTwoExceededException` | `max_wild_two_exceeded` | Mais de 1 coringuinha-curinga na sequência. |
+| `App\Exceptions\Sequence\WildcardCoexistenceException` | `wildcard_coexistence` | Coringão e coringuinha-curinga coexistindo na mesma sequência. |
+| `App\Exceptions\Sequence\SequenceRankOutOfBoundsException` | `sequence_rank_out_of_bounds` | Sequência passaria de `K` ou voltaria antes de `A`. |
+| `App\Exceptions\Sequence\NothingToSwapException` | `nothing_to_swap` | `swap` numa posição cuja carta já é `role='face'`. |
+| `App\Exceptions\Sequence\SwapCardMismatchException` | `swap_card_mismatch` | `code` do swap não bate com o rank/naipe esperado na posição. |
+
+Cada exception recebe no construtor os dados relevantes pra montar a mensagem em português e popular `context()` (ex: `InsufficientCardsInPoolException(string $code, int $needed, int $available)`).
+
+### Retrofit: `StorePlayerHand`
+
+A Action de "Registrar mão inicial" (já em produção) troca seu `ValidationException::withMessages([...])` por `throw new InsufficientCardsInPoolException($code, $quantity, $rows->count())`. Os testes existentes (`StorePlayerHandTest`) checam só `assertStatus(422)`, então continuam passando sem alteração; o teste pode opcionalmente ganhar uma asserção nova em `error === 'insufficient_cards_in_pool'` no corpo da resposta.
+
 ## Endpoints
 
 ### `POST /api/games/{game}/sequences` — criar
@@ -122,30 +152,34 @@ Os testes verificam o estado direto via `Sequence`/`Card` models (Eloquent). Um 
 - canastra completa (7 cartas) sem nenhum curinguinha-curinga → `status='clean'`.
 - canastra completa com 1 coringuinha-curinga → `status='dirty'`.
 - canastra completa com 1 coringão (sem coringuinha) → `status='clean'`.
-- rejeita (422): menos de 3 cartas.
-- rejeita (422): carta que não combina com a posição nem é curinga válido.
-- rejeita (422): 2 coringões na mesma sequência.
-- rejeita (422): 2 coringuinhas-curinga na mesma sequência.
-- rejeita (422): coringão + coringuinha-curinga coexistindo.
-- rejeita (422): sequência passaria de `K` (start_rank + length - 1 > índice de K).
-- rejeita (422): `playerId` não pertence à dupla `team` resolvida.
-- rejeita (422): dupla não tem disponibilidade suficiente de algum código pedido.
-- rejeita (422): trinca de ases com carta que não é Ás, ou com curinga.
+- rejeita 422 `sequence_too_short`: menos de 3 cartas.
+- rejeita 422 `invalid_sequence_card`: carta que não combina com a posição nem é curinga válido.
+- rejeita 422 `max_wild_joker_exceeded`: 2 coringões na mesma sequência.
+- rejeita 422 `max_wild_two_exceeded`: 2 coringuinhas-curinga na mesma sequência.
+- rejeita 422 `wildcard_coexistence`: coringão + coringuinha-curinga coexistindo.
+- rejeita 422 `sequence_rank_out_of_bounds`: sequência passaria de `K` (start_rank + length - 1 > índice de K).
+- rejeita 422 `player_not_in_team`: `playerId` não pertence à dupla `team` resolvida.
+- rejeita 422 `insufficient_cards_in_pool`: dupla não tem disponibilidade suficiente de algum código pedido.
+- rejeita 422 `invalid_ace_trinca_card`: trinca de ases com carta que não é Ás, ou com curinga.
+- cada teste de rejeição também afirma `response()->json('error')` igual ao `errorCode()` esperado (não só o status 422).
 
 `tests/Feature/Sequences/ExtendSequenceTest.php`:
 - estende com `direction='after'`, continua a contagem de posições e o cálculo de `status`.
 - estende com `direction='before'`, desloca `sequence_position` das cartas existentes e atualiza `start_rank`.
 - estende uma trinca de ases (ignora `direction`, só acrescenta ases).
-- rejeita (422) extensão que violaria limite de curinga considerando a sequência inteira (existente + nova).
-- rejeita (422) extensão que passaria de `K` ou voltaria antes de `A`.
-- rejeita (422) `playerId` de dupla diferente da sequência.
+- rejeita 422 `max_wild_joker_exceeded`/`max_wild_two_exceeded`/`wildcard_coexistence`: extensão que violaria limite de curinga considerando a sequência inteira (existente + nova).
+- rejeita 422 `sequence_rank_out_of_bounds`: extensão que passaria de `K` ou voltaria antes de `A`.
+- rejeita 422 `player_not_in_team`: `playerId` de dupla diferente da sequência.
 
 `tests/Feature/Sequences/SwapSequenceCardTest.php`:
 - troca um coringão por carta real numa posição — carta antiga volta pra mão de quem trocou, `status` pode virar `clean` se isso zera o último curinga sujo (cenário com coringuinha também presente) ou continuar `clean`.
 - troca um coringuinha-curinga por carta real — `status` pode virar de `dirty` para `clean`.
-- rejeita (422) troca numa posição que já é `role='face'` (nada pra trocar).
-- rejeita (422) `code` que não bate com o rank/naipe esperado na posição.
-- rejeita (422) `code` indisponível na mão da dupla.
+- rejeita 422 `nothing_to_swap`: troca numa posição que já é `role='face'`.
+- rejeita 422 `swap_card_mismatch`: `code` que não bate com o rank/naipe esperado na posição.
+- rejeita 422 `insufficient_cards_in_pool`: `code` indisponível na mão da dupla.
+
+`tests/Feature/Hands/StorePlayerHandTest.php` (retrofit, sem novo arquivo):
+- o teste já existente "rejects a hand that asks for more copies of a card than the deck holds" ganha uma asserção adicional: `response()->json('error') === 'insufficient_cards_in_pool'`.
 
 ## Fora de escopo
 

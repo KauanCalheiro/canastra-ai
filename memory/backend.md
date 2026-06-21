@@ -22,3 +22,14 @@ Use este padrão para todas as features da API:
 Fluxo: `Controller::store(XData $data)` → `$game = Action::run($data)` → `XResource::make($game)`.
 
 Exemplo de referência: `App\Http\Controllers\Api\GameController`, `App\Actions\Game\CreateGame`, `App\Data\Game\CreateGameData`/`GameData`, `App\Http\Resources\GameResource`.
+
+## Exceptions de regra de negócio
+
+Erros de **regra de negócio** (algo que depende do estado do banco/jogo — ex: "não há cópias suficientes dessa carta", "jogador não pertence a essa dupla") usam uma **exception específica por regra**, não `ValidationException::withMessages()` genérico. Isso dá controle global sobre o formato de erro da API.
+
+- Toda exception de regra de negócio estende `App\Exceptions\DomainException` (abstrata), que expõe `status()` (default 422), `errorCode()` (default: snake_case do nome da classe) e `context()` (array, default vazio).
+- Fica em `app/Exceptions/<Domínio>/<Nome>Exception.php` quando específica de um domínio (ex: `app/Exceptions/Sequence/SequenceTooShortException.php`), ou direto em `app/Exceptions/<Nome>Exception.php` quando compartilhada entre domínios (ex: `InsufficientCardsInPoolException`, usada tanto por mãos quanto por sequências).
+- Um **handler global** em `bootstrap/app.php` (dentro de `withExceptions`) captura qualquer `DomainException` e renderiza `{ error, message, context }` com o `status()` da exception — um único lugar pra manter o formato de erro consistente em toda a API, em vez de cada Action formatar sua própria resposta de erro.
+- **`ValidationException` do Laravel continua sendo usado normalmente** para validação de *forma* da request (tipo/tamanho/regex dos campos do `Data` de entrada, via `rules()`) — isso já é automático e consistente. A exception específica é só para violações de regra de negócio que dependem de consultar o banco.
+
+Exemplo de referência: `App\Exceptions\DomainException`, `App\Exceptions\InsufficientCardsInPoolException` (usada por `StorePlayerHand` e pelas Actions de sequência).
