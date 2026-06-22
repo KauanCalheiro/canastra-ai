@@ -101,3 +101,16 @@ it('creates a single deck worth of cards for a 1-deck game', function () {
     expect(Card::where('game_id', $id)->count())->toBe(54);
     expect(Card::where('game_id', $id)->where('code', 'W')->count())->toBe(2);
 });
+
+it('initializes every player with a hand count of 13 and the game at turn 0', function () {
+    $response = $this->postJson('/api/games', [
+        'decks' => 2,
+        'targetScore' => 3000,
+        'players' => ['Ana', 'Bruno'],
+    ]);
+
+    $id = $response->json('id');
+
+    expect(Game::find($id)->turn_index)->toBe(0);
+    expect(Player::where('game_id', $id)->pluck('hand_count')->all())->toBe([13, 13]);
+});

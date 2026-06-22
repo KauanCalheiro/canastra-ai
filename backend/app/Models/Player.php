@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable(['id', 'game_id', 'seat_index', 'name'])]
+#[Fillable(['id', 'game_id', 'seat_index', 'name', 'hand_count'])]
 class Player extends Model
 {
     public $incrementing = false;
