@@ -151,21 +151,11 @@ class RegisterPlay
                 ->lockForUpdate()
                 ->first();
         } else {
-            // For untracked: first try hand (for tests), then deck (real gameplay)
             $card = Card::where('game_id', $this->game->id)
                 ->where('code', $data->discardedCode)
-                ->where('status', 'hand')
-                ->where('player_id', $this->player->id)
+                ->where('status', 'deck')
                 ->lockForUpdate()
                 ->first();
-
-            if ($card === null) {
-                $card = Card::where('game_id', $this->game->id)
-                    ->where('code', $data->discardedCode)
-                    ->where('status', 'deck')
-                    ->lockForUpdate()
-                    ->first();
-            }
         }
 
         if ($card === null) {

@@ -71,7 +71,7 @@ it('registers an untracked monte draw without a code, revealing the discard from
     expect($game->fresh()->turn_index)->toBe(2);
 });
 
-it('lets a tracked player pick up the top of the discard pile', function () {
+it('lets an untracked player pick up the discard pile, returning it to the anonymous deck pool', function () {
     [$game, $players] = playMakeGameWithPlayers(2, decks: 1);
     $player0 = $players[0];
     playGiveHandCard($game->id, $player0->id, '3H');
@@ -102,25 +102,37 @@ it('lets a tracked player keep a picked-up discard in their identified hand', fu
     [$game, $players] = playMakeGameWithPlayers(2, decks: 1);
     $player0 = $players[0];
     $player1 = $players[1];
-    playGiveHandCard($game->id, $player1->id, '7C');
-    $game->update(['turn_index' => 1]);
 
+    // player0 discards 7C, putting it on top of the discard pile
+    playGiveHandCard($game->id, $player0->id, '7C');
     $this->postJson("/api/games/{$game->id}/plays", [
-        'playerId' => $player1->id,
+        'playerId' => $player0->id,
         'drewFrom' => 'monte',
+        'drawnCode' => '4H',
         'discardedCode' => '7C',
         'loweredCount' => 0,
     ])->assertOk();
 
+    // player1 (untracked) draws from monte and discards something, passing the turn back
+    $play1Result = $this->postJson("/api/games/{$game->id}/plays", [
+        'playerId' => $player1->id,
+        'drewFrom' => 'monte',
+        'discardedCode' => '2C',
+        'loweredCount' => 0,
+    ]);
+    $play1Result->assertOk();
+
+    // player0's turn again: picks up the lixo (top = 2C) into their identified hand,
+    // then immediately discards that same card again from that hand
     $response = $this->postJson("/api/games/{$game->id}/plays", [
         'playerId' => $player0->id,
         'drewFrom' => 'lixo',
-        'discardedCode' => '7C',
+        'discardedCode' => '2C',
         'loweredCount' => 0,
     ]);
 
     $response->assertOk();
-    $card = Card::where('game_id', $game->id)->where('code', '7C')->first();
+    $card = Card::where('game_id', $game->id)->where('code', '2C')->first();
     expect($card->status)->toBe('discard');
     expect($card->player_id)->toBe($player0->id);
 });
