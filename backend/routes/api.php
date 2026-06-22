@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\GameController;
+use App\Http\Controllers\Api\PlayController;
 use App\Http\Controllers\Api\PlayerHandController;
 use App\Http\Controllers\Api\SequenceController;
 use Illuminate\Support\Facades\Route;
@@ -11,3 +12,4 @@ Route::post('/players/{player}/hand', [PlayerHandController::class, 'store']);
 Route::post('/games/{game}/sequences', [SequenceController::class, 'store']);
 Route::post('/sequences/{sequence}/cards', [SequenceController::class, 'extend']);
 Route::post('/sequences/{sequence}/cards/{position}/swap', [SequenceController::class, 'swap']);
+Route::post('/games/{game}/plays', [PlayController::class, 'store']);
