@@ -302,23 +302,25 @@ namespace App\Exceptions;
 class InsufficientCardsInPoolException extends DomainException
 {
     public function __construct(
-        private readonly string $code,
+        private readonly string $cardCode,
         private readonly int $needed,
         private readonly int $available,
     ) {
-        parent::__construct("Não há cópias suficientes de \"{$code}\" disponíveis (precisa de {$needed}, há {$available}).");
+        parent::__construct("Não há cópias suficientes de \"{$cardCode}\" disponíveis (precisa de {$needed}, há {$available}).");
     }
 
     public function context(): array
     {
         return [
-            'code' => $this->code,
+            'code' => $this->cardCode,
             'needed' => $this->needed,
             'available' => $this->available,
         ];
     }
 }
 ```
+
+> Note: property named `$cardCode`, not `$code` — PHP's built-in `\Exception` already declares a `$code` property (int), so a promoted `private readonly string $code` parameter fatals ("Cannot redeclare non-readonly property Exception::$code as readonly").
 
 Save as `backend/app/Exceptions/InsufficientCardsInPoolException.php`.
 
@@ -587,19 +589,21 @@ use App\Exceptions\DomainException;
 class InvalidSequenceCardException extends DomainException
 {
     public function __construct(
-        private readonly string $code,
+        private readonly string $cardCode,
         private readonly string $expectedRank,
         private readonly string $suit,
     ) {
-        parent::__construct("A carta \"{$code}\" não combina com a posição esperada ({$expectedRank} de {$suit}) e não é um curinga válido.");
+        parent::__construct("A carta \"{$cardCode}\" não combina com a posição esperada ({$expectedRank} de {$suit}) e não é um curinga válido.");
     }
 
     public function context(): array
     {
-        return ['code' => $this->code, 'expectedRank' => $this->expectedRank, 'suit' => $this->suit];
+        return ['code' => $this->cardCode, 'expectedRank' => $this->expectedRank, 'suit' => $this->suit];
     }
 }
 ```
+
+> Note: the constructor parameter/property is named `$cardCode`, not `$code` — PHP's built-in `\Exception` class already declares a `$code` property (an int, for the exception code), so a promoted `private readonly string $code` parameter fatals with "Cannot redeclare non-readonly property Exception::$code as readonly". This was caught during Task 2's implementation for `InsufficientCardsInPoolException` (same fix applied there) — apply the same `$cardCode` naming here from the start.
 
 `backend/app/Exceptions/Sequence/InvalidAceTrincaCardException.php`:
 
@@ -612,17 +616,19 @@ use App\Exceptions\DomainException;
 
 class InvalidAceTrincaCardException extends DomainException
 {
-    public function __construct(private readonly string $code)
+    public function __construct(private readonly string $cardCode)
     {
-        parent::__construct("A carta \"{$code}\" não é válida numa trinca de ases (precisa ser um Ás, sem curingas).");
+        parent::__construct("A carta \"{$cardCode}\" não é válida numa trinca de ases (precisa ser um Ás, sem curingas).");
     }
 
     public function context(): array
     {
-        return ['code' => $this->code];
+        return ['code' => $this->cardCode];
     }
 }
 ```
+
+> Note: property named `$cardCode`, not `$code` — see the note on `InvalidSequenceCardException` above (`\Exception` already declares `$code`).
 
 `backend/app/Exceptions/Sequence/MaxWildJokerExceededException.php`:
 
@@ -2327,19 +2333,21 @@ use App\Exceptions\DomainException;
 class SwapCardMismatchException extends DomainException
 {
     public function __construct(
-        private readonly string $code,
+        private readonly string $cardCode,
         private readonly string $expectedRank,
         private readonly string $suit,
     ) {
-        parent::__construct("A carta \"{$code}\" não corresponde à posição esperada ({$expectedRank} de {$suit}).");
+        parent::__construct("A carta \"{$cardCode}\" não corresponde à posição esperada ({$expectedRank} de {$suit}).");
     }
 
     public function context(): array
     {
-        return ['code' => $this->code, 'expectedRank' => $this->expectedRank, 'suit' => $this->suit];
+        return ['code' => $this->cardCode, 'expectedRank' => $this->expectedRank, 'suit' => $this->suit];
     }
 }
 ```
+
+> Note: property named `$cardCode`, not `$code` — see the note on `InvalidSequenceCardException` above (`\Exception` already declares `$code`).
 
 - [ ] **Step 4: Create `SwapSequenceCardData`**
 
