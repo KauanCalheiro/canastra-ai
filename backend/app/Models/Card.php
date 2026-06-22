@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['id', 'game_id', 'code', 'status', 'player_id', 'sequence_id', 'sequence_position', 'role'])]
+#[Fillable(['id', 'game_id', 'code', 'status', 'player_id', 'sequence_id', 'sequence_position', 'role', 'discard_position'])]
 class Card extends Model
 {
     public $incrementing = false;

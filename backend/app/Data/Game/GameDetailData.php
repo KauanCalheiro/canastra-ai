@@ -11,6 +11,8 @@ class GameDetailData extends Data
         public string $id,
         public int $decks,
         public int $targetScore,
+        public int $turnIndex,
+        public ?string $discardTop,
         /** @var PlayerData[] */
         public array $players,
     ) {}

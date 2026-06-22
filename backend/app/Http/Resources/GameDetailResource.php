@@ -18,6 +18,8 @@ class GameDetailResource extends JsonResource
             'id' => $this->id,
             'decks' => $this->decks,
             'targetScore' => $this->targetScore,
+            'turnIndex' => $this->turnIndex,
+            'discardTop' => $this->discardTop,
             'players' => $this->players,
         ];
     }

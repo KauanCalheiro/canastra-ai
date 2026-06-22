@@ -10,5 +10,6 @@ class PlayerData extends Data
         public string $id,
         public int $seatIndex,
         public string $name,
+        public int $handCount,
     ) {}
 }
