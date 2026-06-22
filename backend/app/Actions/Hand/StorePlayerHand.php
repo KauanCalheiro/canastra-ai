@@ -21,6 +21,7 @@ class StorePlayerHand
         DB::transaction(function () use ($player, $data) {
             $this->releaseCurrentHand($player);
             $this->claimCards($player, $data->cards);
+            $player->update(['hand_count' => count($data->cards)]);
         });
 
         return $data->cards;

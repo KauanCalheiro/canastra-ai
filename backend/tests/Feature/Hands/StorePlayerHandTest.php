@@ -31,6 +31,8 @@ it('registers a 13-card hand for a player', function () {
     $handCards = Card::where('player_id', $player->id)->where('status', 'hand')->pluck('code')->sort()->values()->all();
     $expected = collect($cards)->sort()->values()->all();
     expect($handCards)->toBe($expected);
+
+    expect($player->fresh()->hand_count)->toBe(13);
 });
 
 it('accepts duplicate cards up to the number of decks in play', function () {
