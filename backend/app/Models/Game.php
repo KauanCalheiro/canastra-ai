@@ -27,4 +27,9 @@ class Game extends Model
     {
         return $this->hasMany(Sequence::class);
     }
+
+    public function plays(): HasMany
+    {
+        return $this->hasMany(Play::class);
+    }
 }
