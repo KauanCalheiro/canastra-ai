@@ -8,11 +8,13 @@ const props = withDefaults(defineProps<{
   selected?: boolean
   atLimit?: boolean
   variant?: 'grid' | 'tray'
+  testIdPrefix?: string
 }>(), {
   count: 0,
   selected: false,
   atLimit: false,
-  variant: 'grid'
+  variant: 'grid',
+  testIdPrefix: 'hand-card'
 })
 
 defineEmits<{ click: [] }>()
@@ -30,7 +32,7 @@ const card = computed(() => parseCard(props.code))
       atLimit ? 'cursor-default opacity-30' : 'cursor-pointer'
     ]"
     :disabled="atLimit && variant === 'grid'"
-    :data-testid="`hand-card-${variant}-${code}`"
+    :data-testid="`${testIdPrefix}-${variant}-${code}`"
     @click="$emit('click')"
   >
     <span class="text-[15px] leading-none" :class="card.isRed ? 'text-card-red' : 'text-card-black'">{{ card.label }}</span>
