@@ -1,0 +1,1 @@
+deixe anotado os proximos passos que vamos seguir... 1 - depois de registrar a mão precisamos redirecionar para um tela, que ainda vamos decidir... 2 - ao baixar na mesa temos que selecionar quais cartas vamos descer não ser um count

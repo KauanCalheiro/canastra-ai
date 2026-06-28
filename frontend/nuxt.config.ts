@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     backendUrl: 'http://localhost:8000'
   },
-  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/google-fonts'],
+  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/google-fonts', '@nuxt/icon'],
   googleFonts: {
     families: {
       Manrope: [900],

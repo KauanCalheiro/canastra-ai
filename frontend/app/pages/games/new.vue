@@ -120,7 +120,8 @@ async function handleSubmit() {
         :disabled="submitting"
         @click="handleSubmit"
       >
-        Registrar minha mão →
+        Registrar minha mão
+        <Icon name="mdi:arrow-right" class="ml-2 text-[20px]" />
       </BaseButton>
     </footer>
   </div>

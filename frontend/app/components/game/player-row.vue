@@ -38,21 +38,21 @@ defineEmits<{
     <div class="flex flex-col gap-1">
       <button
         type="button"
-        class="text-[12px] text-ink disabled:opacity-20"
+        class="text-ink disabled:opacity-20"
         :disabled="!canMoveUp"
         :data-testid="`player-move-up-${index}`"
         @click="$emit('moveUp')"
       >
-        ▲
+        <Icon name="mdi:chevron-up-circle" class="text-[20px]" />
       </button>
       <button
         type="button"
-        class="text-[12px] text-ink disabled:opacity-20"
+        class="text-ink disabled:opacity-20"
         :disabled="!canMoveDown"
         :data-testid="`player-move-down-${index}`"
         @click="$emit('moveDown')"
       >
-        ▼
+        <Icon name="mdi:chevron-down-circle" class="text-[20px]" />
       </button>
     </div>
   </div>
