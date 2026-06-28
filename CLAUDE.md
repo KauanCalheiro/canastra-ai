@@ -11,9 +11,9 @@ Memórias e convenções do projeto ficam em `./.claude/memories/`. Antes de tom
 | [.claude/memories/frontend.md](.claude/memories/frontend.md) | Frontend (Nuxt) | Detalhes de execução dos testes Playwright; client nunca chama o backend direto — sempre via rota server-side proxy usando `canastraClient()`; ícones sempre via `<Icon name="mdi:...">`, nunca caractere/emoji |
 | [.claude/memories/running.md](.claude/memories/running.md) | Como rodar o projeto | Resumo de setup/comandos para backend, frontend e e2e — manter sincronizado com o `README.md` |
 
-Regras de teste (TDD) ficam em `./.claude/rules/`, uma por projeto:
+Regras de teste (TDD) ficam em `./.claude/rules/`, uma por projeto, escopadas via frontmatter `paths:` (carregam só quando um arquivo do path correspondente entra em contexto):
 
-| Arquivo | Path | Descrição |
-|---|---|---|
-| [.claude/rules/backend-tests.md](.claude/rules/backend-tests.md) | `./backend` | Sempre comece pelo teste Pest (RED → GREEN) antes de implementar |
-| [.claude/rules/frontend-tests.md](.claude/rules/frontend-tests.md) | `./frontend` (código) / `./e2e` (testes) | Sempre comece pelo teste Playwright em `./e2e` antes de implementar |
+| Arquivo | Descrição |
+|---|---|
+| [.claude/rules/backend-tests.md](.claude/rules/backend-tests.md) | Sempre comece pelo teste Pest (RED → GREEN) antes de implementar |
+| [.claude/rules/frontend-tests.md](.claude/rules/frontend-tests.md) | Sempre comece pelo teste Playwright em `./e2e` antes de implementar |

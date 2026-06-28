@@ -1,6 +1,10 @@
-# Regra de teste: Frontend (Nuxt)
+---
+paths:
+  - "frontend/**"
+  - "e2e/**"
+---
 
-Path: `./frontend` (código) / `./e2e` (testes)
+# Regra de teste: Frontend (Nuxt)
 
 O frontend não tem testes unitários/Vitest. Todo teste de comportamento do frontend é feito via **Playwright**, numa pasta separada na raiz do repositório: `./e2e` (workspace próprio, com seu `package.json` e `playwright.config.ts`, fora de `./frontend`).
 

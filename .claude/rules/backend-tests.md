@@ -1,6 +1,9 @@
-# Regra de teste: Backend (Laravel)
+---
+paths:
+  - "backend/**"
+---
 
-Path: `./backend`
+# Regra de teste: Backend (Laravel)
 
 Para toda feature ou mudança de comportamento no backend, **SEMPRE COMECE PELO TESTE** (Pest). Escreva o teste, veja falhar (RED), só depois implemente o mínimo necessário para passar (GREEN). Nunca escrever código de produção antes do teste.
 
