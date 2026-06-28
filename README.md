@@ -8,7 +8,7 @@ Monorepo com três projetos independentes (cada um com seu próprio gerenciador 
 | `backend/` | Laravel 13 + PHP | API (`/api/*`), persistência (SQLite). |
 | `e2e/` | Playwright | Testes end-to-end, fora do `frontend/`. |
 
-Convenções de cada parte (TDD, padrão Action/Data/Resource, data-testid, etc.) estão documentadas em `./memory/` — ver tabela no [CLAUDE.md](CLAUDE.md).
+Convenções de cada parte (TDD, padrão Action/Data/Resource, data-testid, etc.) estão documentadas em `./.claude/memories/` — ver tabela no [CLAUDE.md](CLAUDE.md).
 
 ## Pré-requisitos
 
