@@ -50,8 +50,8 @@ test('registra as 13 cartas da mão inicial, incluindo duplicatas', async ({ pag
     await expect(page.getByTestId('hand-count')).toHaveText('13 / 13 · toque p/ remover')
   })
 
-  await test.step('confirma a mão e vê a tela de sucesso', async () => {
+  await test.step('confirma a mão e é redirecionado para a tela de jogada', async () => {
     await page.getByTestId('confirm-hand').click()
-    await expect(page.getByTestId('initial-hand-success')).toBeVisible()
+    await page.waitForURL(/\/games\/[\w-]+\/play$/)
   })
 })

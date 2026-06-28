@@ -27,7 +27,6 @@ const handComplete = computed(() => handCount.value === 13)
 
 const submitting = ref(false)
 const submitError = ref<string | null>(null)
-const submitted = ref(false)
 
 async function confirmHand() {
   if (!me.value || !handComplete.value) return
@@ -38,7 +37,7 @@ async function confirmHand() {
       method: 'POST',
       body: { cards: handCards.value }
     })
-    submitted.value = true
+    await navigateTo(`/games/${gameId}/play`)
   } catch (err) {
     submitError.value = (err as { data?: { message?: string } })?.data?.message
       ?? 'Não foi possível registrar a mão.'
@@ -61,14 +60,6 @@ async function confirmHand() {
     </header>
 
     <p v-if="loadError" class="px-6 py-4 font-body text-[14px] text-negative" data-testid="initial-hand-load-error">{{ loadError }}</p>
-
-    <template v-else-if="submitted">
-      <div class="flex flex-1 items-center justify-center px-6 text-center">
-        <p class="font-body text-[16px] text-ink" data-testid="initial-hand-success">
-          Mão registrada! Aguardando o início da partida.
-        </p>
-      </div>
-    </template>
 
     <template v-else-if="game">
       <div class="flex-1 overflow-y-auto px-6 py-4">

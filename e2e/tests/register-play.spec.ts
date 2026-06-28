@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test'
 
-async function createGameWithRegisteredHand(page: Page): Promise<string> {
+async function createGameWithRegisteredHand(page: Page): Promise<void> {
   await page.goto('/games/new', { waitUntil: 'networkidle' })
   const nameInputs = page.getByTestId('player-name-input')
   await nameInputs.nth(0).fill('Ana')
@@ -16,23 +16,15 @@ async function createGameWithRegisteredHand(page: Page): Promise<string> {
     await page.getByTestId(`hand-card-grid-${code}`).click()
   }
   await page.getByTestId('confirm-hand').click()
-  await expect(page.getByTestId('initial-hand-success')).toBeVisible()
-
-  const match = page.url().match(/\/games\/([\w-]+)\/initial-hand$/)
-  if (!match) throw new Error('game id not found in URL')
-
-  return match[1]
+  await page.waitForURL(/\/games\/([\w-]+)\/play$/)
 }
 
 test('registra uma jogada completa e passa a vez', async ({ page }) => {
-  let gameId = ''
-
   await test.step('cria a partida e registra a mão inicial', async () => {
-    gameId = await createGameWithRegisteredHand(page)
+    await createGameWithRegisteredHand(page)
   })
 
-  await test.step('acessa a tela de registrar jogada', async () => {
-    await page.goto(`/games/${gameId}/play`, { waitUntil: 'networkidle' })
+  await test.step('chega na tela de registrar jogada', async () => {
     await expect(page.getByTestId('play-turn-name')).toHaveText('Ana')
   })
 
