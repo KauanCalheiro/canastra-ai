@@ -1,16 +1,12 @@
 # Frontend (Nuxt)
 
-## Testes
+> Regra de teste (Playwright/TDD) movida para [.claude/rules/frontend-tests.md](../rules/frontend-tests.md).
 
-O frontend não tem testes unitários/Vitest. Todo teste de comportamento do frontend é feito via **Playwright**, numa pasta separada na raiz do repositório: `./e2e` (workspace próprio, com seu `package.json` e `playwright.config.ts`, fora de `./frontend`).
+## Detalhes de execução dos testes Playwright
 
 `e2e/playwright.config.ts` sobe backend (`php artisan serve`) e frontend (`pnpm dev`) via `webServer` antes de rodar os testes, com `baseURL` apontando para o frontend.
 
 O reporter usa `printSteps: true` (`reporter: [['list', { printSteps: true }]]`) — **todo teste Playwright deve usar `test.step('texto explicando o que está acontecendo', async () => { ... })`** para cada ação relevante (ex: "acessa a página de nova partida", "preenche o nome dos jogadores"), para que o terminal mostre exatamente o que o teste está fazendo passo a passo.
-
-## TDD também no frontend
-
-Toda feature nova de comportamento do frontend deve começar pelo teste Playwright em `./e2e` (vermelho) antes da implementação da página/componente — mesma disciplina de TDD do backend (Pest), só que aqui o "teste" é o e2e, já que não há Vitest. Escrever o `test.step` com os `data-testid` esperados primeiro, ver falhar, depois implementar a tela até passar.
 
 ## Cuidado: hidratação no `page.goto()`
 

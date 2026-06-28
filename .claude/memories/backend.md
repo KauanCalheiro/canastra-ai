@@ -1,8 +1,6 @@
 # Backend (Laravel)
 
-## Sempre comece pelo teste
-
-Para toda feature ou mudança de comportamento no backend, **SEMPRE COMECE PELO TESTE** (Pest). Escreva o teste, veja falhar (RED), só depois implemente o mínimo necessário para passar (GREEN). Nunca escrever código de produção antes do teste.
+> Regra de teste (TDD/Pest) movida para [.claude/rules/backend-tests.md](../rules/backend-tests.md).
 
 ## Padrão de Controller / Action / Data
 
